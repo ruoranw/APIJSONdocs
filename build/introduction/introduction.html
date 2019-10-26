@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Features &#8212; APIJSON Doc 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Server-side Deployment" href="../server_deployment/server_deployment.html" />
+    <link rel="prev" title="APIJSON Documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="features">
+<h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
+<p><strong>For API developers:</strong></p>
+<ul class="simple">
+<li><p>APIJSON largely reduces API developers’ workload by reducing most API protocal design work and documentation work.</p></li>
+<li><p>APIJSON supports automatic permission verification, version management and SQL injection prevention. Developers no longer need to worry about compatibility of APIs and documentation update with legacy apps.</p></li>
+<li><p>With these feature, it saves communication time between front-end and back-end developers about the API design.</p></li>
+</ul>
+<p><strong>For API users:</strong></p>
+<ul class="simple">
+<li><p>You can get different types of data or different data forms by making just one request to the server. It’s very convenient and flexible, and it saves sending multiple requests with many different API endpoints.</p></li>
+<li><p>It provides CRUD(read and write), Fuzzy Search, Remote Function Calls, etc. Other features include saving duplicate data, checking request history, etc.</p></li>
+</ul>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p><strong>Get a user:</strong></p>
+<p>Request</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="nt">&quot;User&quot;</span><span class="p">:{</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="nt">&quot;User&quot;</span><span class="p">:{</span>
+   <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">38710</span><span class="p">,</span>
+   <span class="nt">&quot;sex&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+   <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;TommyLemon&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;certified&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+   <span class="nt">&quot;tag&quot;</span><span class="p">:</span><span class="s2">&quot;Android&amp;Java&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;phone&quot;</span><span class="p">:</span><span class="mi">13000038710</span><span class="p">,</span>
+   <span class="nt">&quot;head&quot;</span><span class="p">:</span><span class="s2">&quot;http://static.oschina.net/uploads/user/1218/2437072_100.jpg?t=1461076033000&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="mi">1485948110000</span><span class="p">,</span>
+   <span class="nt">&quot;pictureList&quot;</span><span class="p">:[</span>
+     <span class="s2">&quot;http://static.oschina.net/uploads/user/1218/2437072_100.jpg?t=1461076033000&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;http://common.cnblogs.com/images/icon_weibo_24.png&quot;</span>
+   <span class="p">]</span>
+ <span class="p">},</span>
+ <span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+ <span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="http://apijson.cn:8080/get/{&quot;User&quot;:{}}">Try it yourself</a></p>
+<p><strong>Get an array of users</strong></p>
+<p>Request</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="nt">&quot;[]&quot;</span><span class="p">:{</span>
+   <span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+   <span class="nt">&quot;User&quot;</span><span class="p">:{</span>
+     <span class="nt">&quot;@column&quot;</span><span class="p">:</span><span class="s2">&quot;id,name&quot;</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="nt">&quot;[]&quot;</span><span class="p">:[</span>
+   <span class="p">{</span>
+     <span class="nt">&quot;User&quot;</span><span class="p">:{</span>
+       <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">38710</span><span class="p">,</span>
+       <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;TommyLemon&quot;</span>
+     <span class="p">}</span>
+   <span class="p">},</span>
+   <span class="p">{</span>
+     <span class="nt">&quot;User&quot;</span><span class="p">:{</span>
+       <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">70793</span><span class="p">,</span>
+       <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Strong&quot;</span>
+     <span class="p">}</span>
+   <span class="p">},</span>
+   <span class="p">{</span>
+     <span class="nt">&quot;User&quot;</span><span class="p">:{</span>
+       <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">82001</span><span class="p">,</span>
+       <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Android&quot;</span>
+     <span class="p">}</span>
+   <span class="p">}</span>
+ <span class="p">],</span>
+ <span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+ <span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="http://apijson.cn:8080/get/{&quot;[]&quot;:{&quot;count&quot;:3,&quot;User&quot;:{&quot;&#64;column&quot;:&quot;id,name&quot;}}}">Try it yourself</a></p>
+<p><a class="reference external" href="http://apijson.cn/">Test it online</a></p>
+<img alt="https://raw.githubusercontent.com/TommyLemon/StaticResources/master/APIJSON_Auto_get.jpg" src="https://raw.githubusercontent.com/TommyLemon/StaticResources/master/APIJSON_Auto_get.jpg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="https://raw.githubusercontent.com/TommyLemon/StaticResources/master/APIJSON_Auto_code.jpg" src="https://raw.githubusercontent.com/TommyLemon/StaticResources/master/APIJSON_Auto_code.jpg" />
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">APIJSON Doc</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../server_deployment/server_deployment.html">Server-side Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../client_deployment/client_deployment.html">Client_side Deployment</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation/design_rules.html">API design style guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">APIJSON Documentation</a></li>
+      <li>Next: <a href="../server_deployment/server_deployment.html" title="next chapter">Server-side Deployment</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Ruoran Wang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/introduction/introduction.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

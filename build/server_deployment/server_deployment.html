@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Server-side Development &#8212; APIJSON Doc 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Client-side Development" href="../client_deployment/client_deployment.html" />
+    <link rel="prev" title="Features" href="../introduction/introduction.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="server-side-development">
+<h1>Server-side Development<a class="headerlink" href="#server-side-development" title="Permalink to this headline">¶</a></h1>
+<p>You can either use Eclipse for JavaEE or IntelllJ IDEA Ultimate to make installation. For both, first download the project and save it in a directory.</p>
+<div class="section" id="installing-with-eclipse">
+<h2>1. Installing with Eclipse<a class="headerlink" href="#installing-with-eclipse" title="Permalink to this headline">¶</a></h2>
+<p><strong>Prerequisites</strong></p>
+<ul class="simple">
+<li><p>Java Development Kit(JDK): 1.8+</p></li>
+<li><p><a class="reference external" href="https://maven.apache.org/download.cgi">MAVEN</a>: 3.0</p></li>
+<li><p>Mysql / Oracle</p></li>
+<li><p><a class="reference external" href="https://www.eclipse.org/downloads/">Eclipse Java EE IDE</a> for Web Developers.Version: Mars.1 Release (4.5.1)</p></li>
+</ul>
+<p><strong>Opening the project with Eclipse</strong></p>
+<blockquote>
+<div><p>Open Eclipse, then select <strong>File &gt; Import &gt; Maven &gt; Existing Maven Projects &gt; Next &gt; Browse &gt; Select the path of the project &gt; APIJSON-Java-Server &gt; APIJSONBoot &gt; check pom.xml…apijson-demo &gt; Finish</strong></p>
+</div></blockquote>
+<p><strong>Preparing the library used in demo</strong></p>
+<p>In the menu at the right, click <strong>libs</strong>, then right click <strong>apijson-orm.jar</strong>, click <strong>add as library</strong>. Apply the same to the rest .jar files in libs.</p>
+<p><strong>Configuration</strong></p>
+<p>Open apijson.demo.server.DemoSQLConfig. In line 40-61, change return values of <cite>getDBUri</cite>,`getDBAccount`,`getDBPassword`,`getSchema` to your own database.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+   <span class="kd">public</span> <span class="n">String</span> <span class="nf">getDBUri</span><span class="o">()</span> <span class="o">{</span>
+       <span class="c1">//TODO: Change the return value to your own</span>
+       <span class="k">return</span> <span class="n">DATABASE_POSTGRESQL</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">getDatabase</span><span class="o">())</span> <span class="o">?</span> <span class="s">&quot;jdbc:postgresql://localhost:5432/postgres&quot;</span> <span class="o">:</span> <span class="s">&quot;jdbc:mysql://192.168.71.146:3306/&quot;</span><span class="o">;</span>
+   <span class="o">}</span>
+   <span class="nd">@Override</span>
+   <span class="kd">public</span> <span class="n">String</span> <span class="nf">getDBAccount</span><span class="o">()</span> <span class="o">{</span>
+   <span class="c1">//TODO: Change the return value to your own</span>
+       <span class="k">return</span> <span class="n">DATABASE_POSTGRESQL</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">getDatabase</span><span class="o">())</span> <span class="o">?</span> <span class="s">&quot;postgres&quot;</span> <span class="o">:</span> <span class="s">&quot;root&quot;</span><span class="o">;</span>
+   <span class="o">}</span>
+   <span class="nd">@Override</span>
+   <span class="kd">public</span> <span class="n">String</span> <span class="nf">getDBPassword</span><span class="o">()</span> <span class="o">{</span>
+   <span class="c1">//TODO: Change the return value to your own</span>
+       <span class="k">return</span> <span class="n">DATABASE_POSTGRESQL</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">getDatabase</span><span class="o">())</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="s">&quot;root&quot;</span><span class="o">;</span>
+   <span class="o">}</span>
+   <span class="nd">@Override</span>
+   <span class="kd">public</span> <span class="n">String</span> <span class="nf">getSchema</span><span class="o">()</span> <span class="o">{</span>
+       <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="kd">super</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+       <span class="k">return</span> <span class="n">StringUtil</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span> <span class="o">?</span> <span class="s">&quot;thea&quot;</span> <span class="o">:</span> <span class="n">s</span><span class="o">;</span> <span class="c1">//TODO: Change the return value to your own. For here,change &quot;thea&quot; to &quot;your database&#39;s name&quot;</span>
+   <span class="o">}</span>
+</pre></div>
+</div>
+<p><strong>Note</strong>: Instead of this step, you can also import your database.</p>
+<p><strong>Running the application</strong></p>
+<p>In Eclipse, in the menu on the top, click <strong>Run &gt; Run As &gt; Java Application &gt;choose APIJSONApplication &gt; OK</strong></p>
+</div>
+<div class="section" id="importing-database">
+<h2>2. Importing database<a class="headerlink" href="#importing-database" title="Permalink to this headline">¶</a></h2>
+<p>This project needs <a class="reference external" href="https://dev.mysql.com/downloads/mysql/">MySQL Server</a> and <a class="reference external" href="https://www.mysql.com/products/workbench/">MySQLWorkbench</a>. Please make sure that both of them are installed.</p>
+<p>My configuration:</p>
+<ul class="simple">
+<li><p>Windows 7 + MySQL Community Server 5.7.16 + MySQLWorkbench 6.3.7</p></li>
+<li><p>OSX EI Capitan + MySQL Community Server 5.7.16 + MySQLWorkbench 6.3.8</p></li>
+<li><p>Systems and softwares are all 64 bit.</p></li>
+</ul>
+<p>Select <strong>MySQLWorkbench &gt; Enter a connection &gt; Click Server menu &gt; Data Import &gt; Select the path of your .sql file &gt; Start Import &gt; Refresh SCHEMAS</strong>. Now you should see tables are added successfully.</p>
+<p>You can also import demo sql tables in <em>APIJSON-Master/MySQL</em> to test the app.</p>
+<img alt="https://vincentcheng.github.io/apijson-doc/assets/img/use1.708387e0.png" src="https://vincentcheng.github.io/apijson-doc/assets/img/use1.708387e0.png" />
+</div>
+<div class="section" id="installing-with-intellij-idea-ultimate">
+<h2>3. Installing with IntellIJ IDEA Ultimate<a class="headerlink" href="#installing-with-intellij-idea-ultimate" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="opening-the-project">
+<h3>Opening the project<a class="headerlink" href="#opening-the-project" title="Permalink to this headline">¶</a></h3>
+<p><strong>Open &gt; Select the path of the project/APIJSON-Java-Server/APIJSONBoot &gt; OK</strong></p>
+</div>
+<div class="section" id="preparing-the-library-used-in-demo">
+<h3>Preparing the library used in demo<a class="headerlink" href="#preparing-the-library-used-in-demo" title="Permalink to this headline">¶</a></h3>
+<p>In libs, right-click <strong>apijson-orm.jar &gt; Add as Library &gt; OK</strong>. Apply this to all <em>.jar</em> files in libs.</p>
+</div>
+<div class="section" id="running-the-application">
+<h3>Running the application<a class="headerlink" href="#running-the-application" title="Permalink to this headline">¶</a></h3>
+<p>In the menu on the top: <strong>Run &gt; Run &gt; Edit Configurations &gt; + &gt; Application &gt; Configuration</strong></p>
+<p>In <strong>Main class</strong>, choose <strong>APIJSON Application</strong>.</p>
+<p>In <strong>Use classpath of module</strong> , choose <strong>apijson-demo</strong>.</p>
+<p>Click <strong>Run</strong> in the bottom.</p>
+<p><strong>Note</strong>: After running, you should see APIJSON test logs and finally, it would show ‘APIJSON已启动’ (APIJSON has launched). If it shows error message‘address already in use’, that means port 8080 has been used. You need to change the port. See <a class="reference external" href="https://stackoverflow.com/questions/21083170/how-to-configure-port-for-a-spring-boot-application">how to change ports for a Spring Boot Application</a></p>
+<p>Then copy and paste link <cite>http://localhost:8080/get/{}</cite> to your browser.</p>
+<p>If it returns with:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;code&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+  <span class="nt">&quot;msg&quot;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">APIJSON Doc</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction/introduction.html">Features</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Server-side Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing-with-eclipse">1. Installing with Eclipse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#importing-database">2. Importing database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-with-intellij-idea-ultimate">3. Installing with IntellIJ IDEA Ultimate</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../client_deployment/client_deployment.html">Client-side Development</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation/design_rules.html">API design style guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../introduction/introduction.html" title="previous chapter">Features</a></li>
+      <li>Next: <a href="../client_deployment/client_deployment.html" title="next chapter">Client-side Development</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Ruoran Wang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/server_deployment/server_deployment.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
