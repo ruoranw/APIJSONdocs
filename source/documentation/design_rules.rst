@@ -273,7 +273,7 @@ Base_url/delete/
 
     1. TableName means the name of the table where you get data. It’ll respond with a JSON Object(the form is {....})with columns inside.
 
-    2. “tag”:tag is needed when methods are not GET or HEAD. The tag after the colon is the key in JSON Object of making requests. Generally, it’s the name of the table you’re looking for.
+    2. “Tag”:tag is needed when methods are not GET or HEAD. The tag after the colon is the key in JSON Object of making requests. Generally, it’s the name of the table you’re looking for.
 
     3. GET, HEAD are methods for general data requests.They support versatile JSON Object structure. Other methods are used for requesting confidential data and the requesting JSON Object needs to be in the same form/order as that in the database. Otherwise, the request shall be denied.
 

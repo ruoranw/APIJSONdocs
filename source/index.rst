@@ -27,7 +27,7 @@ About APIJSON
    :maxdepth: 2
    :caption: Documentation
 
-   documentation/design_rules.md
+   documentation/design_rules
 
 Indices and tables
 ==================
