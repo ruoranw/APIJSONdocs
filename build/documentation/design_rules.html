@@ -91,6 +91,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API design style guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#methods-and-api-endpoints">1. Methods and API endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#keyswords-in-url-parameters">2. Keyswords in URL parameters</a></li>
 </ul>
 </li>
 </ul>
@@ -418,6 +419,206 @@ TableName:{…},
 <li><p>Each object in the database has a unique address.</p></li>
 </ol>
 </div></blockquote>
+</div>
+<div class="section" id="keyswords-in-url-parameters">
+<h2>2. Keyswords in URL parameters<a class="headerlink" href="#keyswords-in-url-parameters" title="Permalink to this headline">¶</a></h2>
+<p><strong>Get data in arrays:</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key[]&quot;:{}</span></code></p>
+<p>The part after the colon is a JSONObject where “key” is optional. When key is the same as the table name, the JSONObject will be in a simplified form. For example: <code class="code docutils literal notranslate"><span class="pre">{Table:{Content}}</span></code> will be written as <code class="code docutils literal notranslate"><span class="pre">{Content}</span></code>.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%7D%7D%7D">{“User[]”:{“User”:{}}}</a></p>
+<p>This is used for getting data from a user. Here, key and tablename are all “User”, then <code class="code docutils literal notranslate"><span class="pre">{&quot;User&quot;:{&quot;id&quot;,</span> <span class="pre">...}}</span></code> will be written as <code class="code docutils literal notranslate"><span class="pre">{&quot;id&quot;,</span> <span class="pre">...}</span></code></p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Get data that meets specific conditions:</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key{}&quot;:[]</span></code></p>
+<p>The part after the colon is a JSONArray with conditions inside.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%5B38710,82001,70793%5D%7D%7D%7D">“id{}”:[38710,82001,70793]</a></p>
+<p>In SQL, this would be id <code class="code docutils literal notranslate"><span class="pre">IN(38710,82001,70793)</span></code>. It means getting data with id equals 38710,82001,70793.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Get data with comparison operation：</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key{}&quot;:&quot;condition0,condition1...&quot;</span></code></p>
+<p>Conditions can be any SQL comparision operation. Use’‘to include any non-number characters.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%22%3C=80000,%3E90000%22%7D%7D%7D">“id{}”:”&lt;=80000,&gt;90000”</a></p>
+<p>In SQL, it’d be id&lt;=80000 OR id&gt;90000, which means get User array with id&lt;=80000 | id&gt;90000</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Get data that contains an element:</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key&lt;&gt;&quot;:Object</span></code> =&gt; <a href="#id1"><span class="problematic" id="id2">`</span></a>”key&lt;&gt;”:[Object] `</p>
+<p><em>key</em> must be a JSONArray while <em>Object</em> cannot be JSON.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22contactIdList%3C%3E%22:38710%7D%7D%7D">“contactIdList&lt;&gt;”:38710</a></p>
+<p>In SQL, this would <code class="code docutils literal notranslate"><span class="pre">bejson_contains(contactIdList,38710)</span></code>.It means find data of the User whose contactList contains 38710.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>See if it exists</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key}{&#64;&quot;:{&quot;from&quot;:&quot;Table&quot;,&quot;Table&quot;:{</span> <span class="pre">...</span> <span class="pre">}}</span></code></p>
+<p><em>}{</em> means EXISTS; <em>key</em> is the one you want to check.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><dl>
+<dt><a href="#id3"><span class="problematic" id="id4">`</span></a>”id}{&#64;”:{</dt><dd><blockquote>
+<div><p>“from”:”Comment”,
+“Comment”:{</p>
+<blockquote>
+<div><p>“momentId”:15</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>} &lt;<a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%22:%7B%22id%7D%7B&#64;%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22momentId%22:15%7D%7D%7D%7D">http://apijson.cn:8080/get/%7B%22User%22:%7B%22id%7D%7B&#64;%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22momentId%22:15%7D%7D%7D%7D</a>&gt;`_</p>
+</dd>
+</dl>
+<p>WHERE EXISTS(SELECT * FROM Comment WHERE momentId=15)</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Include functions in parameters</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key()&quot;:&quot;function</span> <span class="pre">(key0,key1...)&quot;</span></code></p>
+<p>This will trigger the back-end function(JSONObject request, String key0, String key1…)to get or testify data.</p>
+<p>Use - and + to show the order of priority: analyze key-() &gt; analyze the current object &gt; analyze key() &gt; analyze child object &gt; analyze key+()</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22Moment%22:%7B%22id%22:301,%22isPraised()%22:%22isContain(praiseUserIdList,userId)%22%7D%7D">“isPraised()”:”isContain(praiseUserIdList,userId)”</a></p>
+<p>This will use function boolean <code class="code docutils literal notranslate"><span class="pre">isContain(JSONObject</span> <span class="pre">request,</span> <span class="pre">String</span> <span class="pre">array,</span> <span class="pre">String</span> <span class="pre">value)</span></code>. In this case, client will get <code class="code docutils literal notranslate"><span class="pre">“is</span> <span class="pre">praised”:</span> <span class="pre">true</span></code> (In this case, client use function to testify if a user clicked ‘like’ button for a post.)</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Subquery</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>&quot;key@&quot;:{
+    &quot;range&quot;: &quot;ALL&quot;,
+    &quot;from&quot;:&quot;Table&quot;,
+    &quot;Table&quot;:{ ... }
+}
+</pre></div>
+</div>
+<p>Range can be <strong>ALL</strong>, <strong>ANY</strong>. It means which table you want to query. It’s very similar to how you query in SQL. You can also use <strong>COUNT</strong>, <strong>JOIN</strong>, etc.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><dl>
+<dt><a href="#id5"><span class="problematic" id="id6">`</span></a>”id&#64;”:{</dt><dd><p>“from”:”Comment”,
+“Comment”:{
+“&#64;column”:”min(userId)”</p>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+<p>} &lt;<a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%22:%7B%22id&#64;%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22&#64;column%22:%22min(userId)%22%7D%7D%7D%7D">http://apijson.cn:8080/get/%7B%22User%22:%7B%22id&#64;%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22&#64;column%22:%22min(userId)%22%7D%7D%7D%7D</a>&gt;`_</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">code</dt>
+<dd class="field-odd"><p><cite>WHERE id=(SELECT min(userId) FROM Comment)</cite></p>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Fuzzy matching</strong> :code: <cite>“key$”:”SQL search expressions”</cite> =&gt; <cite>“key$”:[“SQL search expressions”]</cite></p>
+<p>Any SQL search expression can be applied here.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22name$%22:%22%2525m%2525%22%7D%7D%7D">“name$”:”%m%”</a></p>
+<p>In SQL, it’s :code: <cite>name LIKE ‘%m%’</cite>, meaning that get <em>User</em> with ‘m’ in name.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Regular Expression</strong> :code: <cite>“key~”:”regular expression”</cite> =&gt; <cite>“key~”:[“regular expression”]</cite></p>
+<p>It can be any regular expressions. Advanced search is applicable.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22name~%22:%22%5E%5B0-9%5D%252B$%22%7D%7D%7D">“name~”:”^[0-9]+$”</a></p>
+<p>In SQL, it’s :code: <cite>name REGEXP ‘^[0-9]+$’</cite>.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Get data in a range</strong> :code: <cite>“key%”:”start,end”</cite> =&gt; <cite>“key%”:[“start,end”]</cite></p>
+<p>The data type of start and end can only be either <strong>Boolean</strong>, <strong>Number</strong> or <strong>String</strong>. Eg. “2017-01-01,2019-01-01”, [“1,90000”, “82001,100000”]. It’s used for getting data from a specific time range.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22date%2525%22:%222017-10-01,2018-10-01%22%7D%7D%7D">“date%”:”2017-10-01,2018-10-01”</a></p>
+<blockquote>
+<div><p>In SQL, it’s :code: <cite>date BETWEEN ‘2017-10-01’ AND ‘2018-10-01’</cite>, meaning to get <em>User</em> data that registered between 2017-10-01 and 2018-10-01.</p>
+</div></blockquote>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Make an alias</strong> :code: <cite>“name:alias”</cite></p>
+<p>This changes name to alias in returning results. It’s applicable to column, tableName, SQL Functions, etc. but only in GET, HEAD requests.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22Comment%22:%7B%22&#64;column%22:%22id,toId:parentId%22,%22id%22:51%7D%7D">“&#64;column”:”toId:parentId”</a></p>
+<p>In SQL, it’s :code: <cite>toId AS parentId</cite>. It’ll return <em>parentID</em> instead of <em>toID</em>.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Add / expand an item</strong> :code: <cite>“key+”:Object</cite></p>
+<p>The type of Object is decided by key. Types can be <strong>Number</strong>, <strong>String</strong>, <strong>JSONArray</strong>. Forms are 82001,”apijson”,[“url0”,”url1”] respectively. It’s only applicable to <strong>PUT</strong> request.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">code</dt>
+<dd class="field-odd"><p><cite>“praiseUserIdList+”:[82001]</cite></p>
+</dd>
+</dl>
+<p>In SQL, it’s json_insert(praiseUserIdList,82001). Add an id that praised the post.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Delete / decrease an item</strong> :code: <cite>“Key-”:object</cite></p>
+<p>It’s the contrary of “key+”.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">code</dt>
+<dd class="field-odd"><p><cite>“balance-“:100.00</cite></p>
+</dd>
+</dl>
+<p>In SQL, it’s :code: <cite>balance = balance - 100.00</cite>, meaning there’s 100 less in balance.</p>
+</div></blockquote>
+</div>
 </div>
 </div>
 

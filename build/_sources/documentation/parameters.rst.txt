@@ -1,0 +1,5 @@
+API design style guide cont'
+============================
+
+2. Keyswords in URL parameters
+------------------------------
