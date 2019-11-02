@@ -478,6 +478,27 @@ It’s the contrary of “key+”.
 
        In SQL, it's :code: `balance = balance - 100.00`, meaning there's 100 less in balance.
 
+-----------------
 
+**Operations** :code: `&, |, ! `
+
+They're used in logic operations. It’s the same as **AND**, **OR**, **NOT** in SQL respectively.
+
+By default, for the same key, it’s ‘|’ (OR)operation among conditions; for different keys, the default operation among conditions is ‘&’(AND).
+
+.. toggle-header::
+    :header: Example
+
+        ① `"id&{}":">80000,<=90000" <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id&%7B%7D%22:%22%3E80000,%3C=90000%22%7D%7D>`_
+
+        In SQL, it's :code:`id>80000 AND id<=90000`, meaning id needs to be :code:`id>80000 & id<=90000`
+
+        ② `"id|{}":">90000,<=80000" <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id%7C%7B%7D%22:%22%3E90000,%3C=80000%22%7D%7D>`_.
+
+        It's the same as :code: `"id{}":">90000,<=80000"`. In SQL, it'sid>80000 OR id<=90000, meaning that id needs to be id>90000 | id<=80000
+
+        ③ `"id!{}":[82001,38710] <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id!%7B%7D%22:%5B82001,38710%5D%7D%7D>`_.
+
+        In SQL, it's :code:`id NOT IN(82001,38710)`, meaning id needs to be :code:`! (id=82001 | id=38710)`.
 
 
