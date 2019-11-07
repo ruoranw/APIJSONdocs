@@ -1,10 +1,18 @@
 API design style guide
 ======================
 
+This chapter introduces methods in API designs with APIJSON. These methods are:
+
+**GET**, **HEAD**, **GETS**, **HEADS**, **POST**, **PUT**, **DELETE**.
+
+Methods are desired actions to be performed on identified resources. This chapter also include how these methods are mapped to HTTP methods.
+
+Base URL means the root address of the website. Everything that follows it is known as a URL path. All API paths are relative to the base URL.
+
 1. Methods and API endpoints
 ----------------------------
 
-**GET** : A general way to get counts. You can use dev tools to make edits in a web browser.
+**GET** : A general way to retrieve resources.
 
 Base_url/get/
 
@@ -13,42 +21,47 @@ Base_url/get/
     .. tab-container:: tab1
        :title: Request
 
-        .. code-block:: json
+        .. code-block::
 
-           {
-              TableName{
-              // conditions.
-               }
+            {
+             "TableName"{
+             // conditions
+             }
             }
 
-           // eg. To get a post with id = 235:
+           // eg. Request a post with id=235 in table "Post":
             {
-              "Post"{
-              "id": 235
-               }
+             "Post"{
+             "id": 235
+              }
              }
 
     .. tab-container:: tab2
        :title: Response
 
-        .. code-block:: json
+        .. code-block::
 
            {
-            TableName:{ … },
-            “code”:200,
-            “msg”:”success”
+            "TableName":{
+            ...
+            },
+            "code":200,
+            "msg":”success”
             }
 
-          // eg.
+          // eg. The returned response:
           {
+           "Moment":{
+           "id":235,
+           "userId":38710,
+           "content":"..."
+            },
+           "code":200,
+           "msg":"success"
+          }
 
-            “Moment”:{ “id”:235, “userId”:38710, “content”:”..”},
-            “code”:200,
-            “msg”:”success”
-            }
 
-
-**HEAD** : A general way to get counts. You can use dev tools to make edits in a web browser.
+**HEAD** : A general way to retrieve the number of rows in a table satisfying the criteria specified in the request body.
 
 Base_url/head/
 
@@ -57,37 +70,41 @@ Base_url/head/
    .. tab-container:: tab1
        :title: Request
 
-       .. code-block:: json
+       .. code-block::
 
           {
-           TableName:{
-           ...
+           "TableName":{
+           // conditions
            }
           }
 
-          // eg. Get the number of posts posted by the user with id =38710:
+          // eg. Get the number of posts posted by the user whose id = 38710:
           {
-          "Post":{
-          "userId":38710
-          }
+           "Post":{
+           "userId":38710
+           }
           }
 
    .. tab-container:: tab2
        :title: Response
 
-       .. code-block:: json
+       .. code-block::
 
          {
-         TableName:{"code":200, "msg":"success", "count":10},
-         "code":200,
-         "msg":"success"
+          "TableName":{
+          "code":200,
+          "msg":"success",
+          "count":...
+          },
+           "code":200,
+           "msg":"success"
          }
 
          // eg.
          {
-         "Post":{"code":200, "msg":"success", "count":10},
-         "code":200,
-         "msg":"success"
+          "Post":{"code":200, "msg":"success", "count":10},
+          "code":200,
+          "msg":"success"
          }
 
 **GETS** : Get data with high security and confidentiality like bank accounts, birth date.
@@ -286,8 +303,8 @@ Base_url/delete/
     7. Each object in the database has a unique address.
 
 
-2. Keyswords in URL parameters
-------------------------------
+2. How to make a request
+------------------------
 
 **Get data in arrays:** :code:`"key[]":{}`
 
@@ -329,7 +346,7 @@ Conditions can be any SQL comparision operation. Use''to include any non-number 
 
 ----------------
 
-**Get data that contains an element:** :code:`"key<>":Object` => `"key<>":[Object] `
+**Get data that contains an element:** :code:`"key<>":Object` => :code:`"key<>":[Object] `
 
 *key* must be a JSONArray while *Object* cannot be JSON.
 
@@ -401,7 +418,7 @@ Range can be **ALL**, **ANY**. It means which table you want to query. It’s ve
 
 ----------------
 
-**Fuzzy matching** :code: `"key$":"SQL search expressions"` => `"key$":["SQL search expressions"]`
+**Fuzzy matching** :code:`"key$":"SQL search expressions"` => :code:`"key$":["SQL search expressions"]`
 
 Any SQL search expression can be applied here.
 
@@ -410,12 +427,12 @@ Any SQL search expression can be applied here.
 
        `"name$":"%m%" <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22name$%22:%22%2525m%2525%22%7D%7D%7D>`_
 
-       In SQL, it's :code: `name LIKE '%m%'`, meaning that get *User* with ‘m’ in name.
+       In SQL, it's :code:`name LIKE '%m%'`, meaning that get *User* with ‘m’ in name.
 
 
 ----------------
 
-**Regular Expression** :code: `"key~":"regular expression"` => `"key~":["regular expression"]`
+**Regular Expression** :code:`"key~":"regular expression"` => :code:`"key~":["regular expression"]`
 
 It can be any regular expressions. Advanced search is applicable.
 
@@ -424,11 +441,11 @@ It can be any regular expressions. Advanced search is applicable.
 
        `"name~":"^[0-9]+$" <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22name~%22:%22%5E%5B0-9%5D%252B$%22%7D%7D%7D>`_
 
-       In SQL, it's :code: `name REGEXP '^[0-9]+$'`.
+       In SQL, it's :code:`name REGEXP '^[0-9]+$'`.
 
 ----------------
 
-**Get data in a range** :code: `"key%":"start,end"` => `"key%":["start,end"]`
+**Get data in a range** :code:`"key%":"start,end"` => :code:`"key%":["start,end"]`
 
 The data type of start and end can only be either **Boolean**, **Number** or **String**. Eg. "2017-01-01,2019-01-01", ["1,90000", "82001,100000"]. It's used for getting data from a specific time range.
 
@@ -437,11 +454,11 @@ The data type of start and end can only be either **Boolean**, **Number** or **S
 
        `"date%":"2017-10-01,2018-10-01" <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22date%2525%22:%222017-10-01,2018-10-01%22%7D%7D%7D>`_
 
-        In SQL, it's :code: `date BETWEEN '2017-10-01' AND '2018-10-01'`, meaning to get *User* data that registered between 2017-10-01 and 2018-10-01.
+        In SQL, it's :code:`date BETWEEN '2017-10-01' AND '2018-10-01'`, meaning to get *User* data that registered between 2017-10-01 and 2018-10-01.
 
 ----------------
 
-**Make an alias** :code: `"name:alias"`
+**Make an alias** :code:`"name:alias"`
 
 This changes name to alias in returning results. It’s applicable to column, tableName, SQL Functions, etc. but only in GET, HEAD requests.
 
@@ -450,11 +467,11 @@ This changes name to alias in returning results. It’s applicable to column, ta
 
        `"@column":"toId:parentId" <http://apijson.cn:8080/get/%7B%22Comment%22:%7B%22@column%22:%22id,toId:parentId%22,%22id%22:51%7D%7D>`_
 
-       In SQL, it's :code: `toId AS parentId`. It'll return *parentID* instead of *toID*.
+       In SQL, it's :code:`toId AS parentId`. It'll return *parentID* instead of *toID*.
 
 ----------------
 
-**Add / expand an item** :code: `"key+":Object`
+**Add / expand an item** :code:`"key+":Object`
 
 The type of Object is decided by key. Types can be **Number**, **String**, **JSONArray**. Forms are 82001,"apijson",["url0","url1"] respectively. It’s only applicable to **PUT** request.
 
@@ -467,20 +484,20 @@ The type of Object is decided by key. Types can be **Number**, **String**, **JSO
 
 ----------------
 
-**Delete / decrease an item** :code: `“Key-”:object`
+**Delete / decrease an item** :code:`“Key-”:object`
 
 It’s the contrary of “key+”.
 
 .. toggle-header::
     :header: Example
 
-       :code: `"balance-":100.00`
+       :code:`"balance-":100.00`
 
-       In SQL, it's :code: `balance = balance - 100.00`, meaning there's 100 less in balance.
+       In SQL, it's :code:`balance = balance - 100.00`, meaning there's 100 less in balance.
 
 -----------------
 
-**Operations** :code: `&, |, ! `
+**Operations** :code:`&,|,!`
 
 They're used in logic operations. It’s the same as **AND**, **OR**, **NOT** in SQL respectively.
 
@@ -495,10 +512,11 @@ By default, for the same key, it’s ‘|’ (OR)operation among conditions; for
 
         ② `"id|{}":">90000,<=80000" <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id%7C%7B%7D%22:%22%3E90000,%3C=80000%22%7D%7D>`_.
 
-        It's the same as :code: `"id{}":">90000,<=80000"`. In SQL, it'sid>80000 OR id<=90000, meaning that id needs to be id>90000 | id<=80000
+        It's the same as :code:`"id{}":">90000,<=80000"`. In SQL, it'sid>80000 OR id<=90000, meaning that id needs to be id>90000 | id<=80000
 
         ③ `"id!{}":[82001,38710] <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id!%7B%7D%22:%5B82001,38710%5D%7D%7D>`_.
 
         In SQL, it's :code:`id NOT IN(82001,38710)`, meaning id needs to be :code:`! (id=82001 | id=38710)`.
+
 
 
