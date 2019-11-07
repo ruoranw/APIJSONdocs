@@ -91,7 +91,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API design style guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#methods-and-api-endpoints">1. Methods and API endpoints</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#keyswords-in-url-parameters">2. Keyswords in URL parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-make-a-request">2. How to make a request</a></li>
 </ul>
 </li>
 </ul>
@@ -160,26 +160,30 @@
             
   <div class="section" id="api-design-style-guide">
 <h1>API design style guide<a class="headerlink" href="#api-design-style-guide" title="Permalink to this headline">¶</a></h1>
+<p>This chapter introduces methods in API designs with APIJSON. These methods are:</p>
+<p><strong>GET</strong>, <strong>HEAD</strong>, <strong>GETS</strong>, <strong>HEADS</strong>, <strong>POST</strong>, <strong>PUT</strong>, <strong>DELETE</strong>.</p>
+<p>Methods are desired actions to be performed on identified resources. This chapter also include how these methods are mapped to HTTP methods.</p>
+<p>Base URL means the root address of the website. Everything that follows it is known as a URL path. All API paths are relative to the base URL.</p>
 <div class="section" id="methods-and-api-endpoints">
 <h2>1. Methods and API endpoints<a class="headerlink" href="#methods-and-api-endpoints" title="Permalink to this headline">¶</a></h2>
-<p><strong>GET</strong> : A general way to get counts. You can use dev tools to make edits in a web browser.</p>
+<p><strong>GET</strong> : A general way to retrieve resources.</p>
 <p>Base_url/get/</p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
 <p class="tab-title">Request</p>
 <blockquote>
-<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-   TableName{
-   // conditions.
-    }
- }
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="p">{</span>
+  <span class="s2">&quot;TableName&quot;</span><span class="p">{</span>
+  <span class="o">//</span> <span class="n">conditions</span>
+  <span class="p">}</span>
+ <span class="p">}</span>
 
-// eg. To get a post with id = 235:
- {
-   &quot;Post&quot;{
-   &quot;id&quot;: 235
-    }
-  }
+<span class="o">//</span> <span class="n">eg</span><span class="o">.</span> <span class="n">Request</span> <span class="n">a</span> <span class="n">post</span> <span class="k">with</span> <span class="nb">id</span><span class="o">=</span><span class="mi">235</span> <span class="ow">in</span> <span class="n">table</span> <span class="s2">&quot;Post&quot;</span><span class="p">:</span>
+ <span class="p">{</span>
+  <span class="s2">&quot;Post&quot;</span><span class="p">{</span>
+  <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">235</span>
+   <span class="p">}</span>
+  <span class="p">}</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -187,58 +191,67 @@
 <div class="tab-content docutils container" id="tab-tab2">
 <p class="tab-title">Response</p>
 <blockquote>
-<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span> {
-  TableName:{ … },
-  “code”:200,
-  “msg”:”success”
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span> {
+  &quot;TableName&quot;:{
+  ...
+  },
+  &quot;code&quot;:200,
+  &quot;msg&quot;:”success”
   }
 
-// eg.
+// eg. The returned response:
 {
-
-  “Moment”:{ “id”:235, “userId”:38710, “content”:”..”},
-  “code”:200,
-  “msg”:”success”
-  }
+ &quot;Moment&quot;:{
+ &quot;id&quot;:235,
+ &quot;userId&quot;:38710,
+ &quot;content&quot;:&quot;...&quot;
+  },
+ &quot;code&quot;:200,
+ &quot;msg&quot;:&quot;success&quot;
+}
 </pre></div>
 </div>
 </div></blockquote>
 </div>
 </div>
-<p><strong>HEAD</strong> : A general way to get counts. You can use dev tools to make edits in a web browser.</p>
+<p><strong>HEAD</strong> : A general way to retrieve the number of rows in a table satisfying the criteria specified in the request body.</p>
 <p>Base_url/head/</p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
 <p class="tab-title">Request</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
- TableName:{
- ...
- }
-}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;TableName&quot;</span><span class="p">:{</span>
+ <span class="o">//</span> <span class="n">conditions</span>
+ <span class="p">}</span>
+<span class="p">}</span>
 
-// eg. Get the number of posts posted by the user with id =38710:
-{
-&quot;Post&quot;:{
-&quot;userId&quot;:38710
-}
-}
+<span class="o">//</span> <span class="n">eg</span><span class="o">.</span> <span class="n">Get</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">posts</span> <span class="n">posted</span> <span class="n">by</span> <span class="n">the</span> <span class="n">user</span> <span class="n">whose</span> <span class="nb">id</span> <span class="o">=</span> <span class="mi">38710</span><span class="p">:</span>
+<span class="p">{</span>
+ <span class="s2">&quot;Post&quot;</span><span class="p">:{</span>
+ <span class="s2">&quot;userId&quot;</span><span class="p">:</span><span class="mi">38710</span>
+ <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
 <div class="tab-content docutils container" id="tab-tab2">
 <p class="tab-title">Response</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-TableName:{&quot;code&quot;:200, &quot;msg&quot;:&quot;success&quot;, &quot;count&quot;:10},
-&quot;code&quot;:200,
-&quot;msg&quot;:&quot;success&quot;
-}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;TableName&quot;</span><span class="p">:{</span>
+ <span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+ <span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">...</span>
+ <span class="p">},</span>
+  <span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+  <span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span>
+<span class="p">}</span>
 
-// eg.
-{
-&quot;Post&quot;:{&quot;code&quot;:200, &quot;msg&quot;:&quot;success&quot;, &quot;count&quot;:10},
-&quot;code&quot;:200,
-&quot;msg&quot;:&quot;success&quot;
-}
+<span class="o">//</span> <span class="n">eg</span><span class="o">.</span>
+<span class="p">{</span>
+ <span class="s2">&quot;Post&quot;</span><span class="p">:{</span><span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span> <span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">},</span>
+ <span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+ <span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -420,8 +433,8 @@ TableName:{…},
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="keyswords-in-url-parameters">
-<h2>2. Keyswords in URL parameters<a class="headerlink" href="#keyswords-in-url-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-to-make-a-request">
+<h2>2. How to make a request<a class="headerlink" href="#how-to-make-a-request" title="Permalink to this headline">¶</a></h2>
 <p><strong>Get data in arrays:</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key[]&quot;:{}</span></code></p>
 <p>The part after the colon is a JSONObject where “key” is optional. When key is the same as the table name, the JSONObject will be in a simplified form. For example: <code class="code docutils literal notranslate"><span class="pre">{Table:{Content}}</span></code> will be written as <code class="code docutils literal notranslate"><span class="pre">{Content}</span></code>.</p>
 <div class="toggle-header docutils container">
@@ -458,7 +471,7 @@ TableName:{…},
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Get data that contains an element:</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key&lt;&gt;&quot;:Object</span></code> =&gt; <a href="#id1"><span class="problematic" id="id2">`</span></a>”key&lt;&gt;”:[Object] `</p>
+<p><strong>Get data that contains an element:</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key&lt;&gt;&quot;:Object</span></code> =&gt; :code:<a href="#id1"><span class="problematic" id="id2">`</span></a>”key&lt;&gt;”:[Object] `</p>
 <p><em>key</em> must be a JSONArray while <em>Object</em> cannot be JSON.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
@@ -538,7 +551,7 @@ TableName:{…},
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Fuzzy matching</strong> :code: <cite>“key$”:”SQL search expressions”</cite> =&gt; <cite>“key$”:[“SQL search expressions”]</cite></p>
+<p><strong>Fuzzy matching</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key$&quot;:&quot;SQL</span> <span class="pre">search</span> <span class="pre">expressions&quot;</span></code> =&gt; <code class="code docutils literal notranslate"><span class="pre">&quot;key$&quot;:[&quot;SQL</span> <span class="pre">search</span> <span class="pre">expressions&quot;]</span></code></p>
 <p>Any SQL search expression can be applied here.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
@@ -546,11 +559,11 @@ TableName:{…},
 <div class="toggle-content docutils container">
 <blockquote>
 <div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22name$%22:%22%2525m%2525%22%7D%7D%7D">“name$”:”%m%”</a></p>
-<p>In SQL, it’s :code: <cite>name LIKE ‘%m%’</cite>, meaning that get <em>User</em> with ‘m’ in name.</p>
+<p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">name</span> <span class="pre">LIKE</span> <span class="pre">'%m%'</span></code>, meaning that get <em>User</em> with ‘m’ in name.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Regular Expression</strong> :code: <cite>“key~”:”regular expression”</cite> =&gt; <cite>“key~”:[“regular expression”]</cite></p>
+<p><strong>Regular Expression</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key~&quot;:&quot;regular</span> <span class="pre">expression&quot;</span></code> =&gt; <code class="code docutils literal notranslate"><span class="pre">&quot;key~&quot;:[&quot;regular</span> <span class="pre">expression&quot;]</span></code></p>
 <p>It can be any regular expressions. Advanced search is applicable.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
@@ -558,11 +571,11 @@ TableName:{…},
 <div class="toggle-content docutils container">
 <blockquote>
 <div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22name~%22:%22%5E%5B0-9%5D%252B$%22%7D%7D%7D">“name~”:”^[0-9]+$”</a></p>
-<p>In SQL, it’s :code: <cite>name REGEXP ‘^[0-9]+$’</cite>.</p>
+<p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">name</span> <span class="pre">REGEXP</span> <span class="pre">'^[0-9]+$'</span></code>.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Get data in a range</strong> :code: <cite>“key%”:”start,end”</cite> =&gt; <cite>“key%”:[“start,end”]</cite></p>
+<p><strong>Get data in a range</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key%&quot;:&quot;start,end&quot;</span></code> =&gt; <code class="code docutils literal notranslate"><span class="pre">&quot;key%&quot;:[&quot;start,end&quot;]</span></code></p>
 <p>The data type of start and end can only be either <strong>Boolean</strong>, <strong>Number</strong> or <strong>String</strong>. Eg. “2017-01-01,2019-01-01”, [“1,90000”, “82001,100000”]. It’s used for getting data from a specific time range.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
@@ -571,12 +584,12 @@ TableName:{…},
 <blockquote>
 <div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22date%2525%22:%222017-10-01,2018-10-01%22%7D%7D%7D">“date%”:”2017-10-01,2018-10-01”</a></p>
 <blockquote>
-<div><p>In SQL, it’s :code: <cite>date BETWEEN ‘2017-10-01’ AND ‘2018-10-01’</cite>, meaning to get <em>User</em> data that registered between 2017-10-01 and 2018-10-01.</p>
+<div><p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">date</span> <span class="pre">BETWEEN</span> <span class="pre">'2017-10-01'</span> <span class="pre">AND</span> <span class="pre">'2018-10-01'</span></code>, meaning to get <em>User</em> data that registered between 2017-10-01 and 2018-10-01.</p>
 </div></blockquote>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Make an alias</strong> :code: <cite>“name:alias”</cite></p>
+<p><strong>Make an alias</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;name:alias&quot;</span></code></p>
 <p>This changes name to alias in returning results. It’s applicable to column, tableName, SQL Functions, etc. but only in GET, HEAD requests.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
@@ -584,11 +597,11 @@ TableName:{…},
 <div class="toggle-content docutils container">
 <blockquote>
 <div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22Comment%22:%7B%22&#64;column%22:%22id,toId:parentId%22,%22id%22:51%7D%7D">“&#64;column”:”toId:parentId”</a></p>
-<p>In SQL, it’s :code: <cite>toId AS parentId</cite>. It’ll return <em>parentID</em> instead of <em>toID</em>.</p>
+<p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">toId</span> <span class="pre">AS</span> <span class="pre">parentId</span></code>. It’ll return <em>parentID</em> instead of <em>toID</em>.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Add / expand an item</strong> :code: <cite>“key+”:Object</cite></p>
+<p><strong>Add / expand an item</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key+&quot;:Object</span></code></p>
 <p>The type of Object is decided by key. Types can be <strong>Number</strong>, <strong>String</strong>, <strong>JSONArray</strong>. Forms are 82001,”apijson”,[“url0”,”url1”] respectively. It’s only applicable to <strong>PUT</strong> request.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
@@ -604,19 +617,32 @@ TableName:{…},
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Delete / decrease an item</strong> :code: <cite>“Key-”:object</cite></p>
+<p><strong>Delete / decrease an item</strong> <code class="code docutils literal notranslate"><span class="pre">“Key-”:object</span></code></p>
 <p>It’s the contrary of “key+”.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
-<div><dl class="field-list simple">
-<dt class="field-odd">code</dt>
-<dd class="field-odd"><p><cite>“balance-“:100.00</cite></p>
-</dd>
-</dl>
-<p>In SQL, it’s :code: <cite>balance = balance - 100.00</cite>, meaning there’s 100 less in balance.</p>
+<div><p><code class="code docutils literal notranslate"><span class="pre">&quot;balance-&quot;:100.00</span></code></p>
+<p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">balance</span> <span class="pre">=</span> <span class="pre">balance</span> <span class="pre">-</span> <span class="pre">100.00</span></code>, meaning there’s 100 less in balance.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Operations</strong> <code class="code docutils literal notranslate"><span class="pre">&amp;,|,!</span></code></p>
+<p>They’re used in logic operations. It’s the same as <strong>AND</strong>, <strong>OR</strong>, <strong>NOT</strong> in SQL respectively.</p>
+<p>By default, for the same key, it’s ‘|’ (OR)operation among conditions; for different keys, the default operation among conditions is ‘&amp;’(AND).</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p>① <a class="reference external" href="http://apijson.cn:8080/head/%7B%22User%22:%7B%22id&amp;%7B%7D%22:%22%3E80000,%3C=90000%22%7D%7D">“id&amp;{}”:”&gt;80000,&lt;=90000”</a></p>
+<p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">id&gt;80000</span> <span class="pre">AND</span> <span class="pre">id&lt;=90000</span></code>, meaning id needs to be <code class="code docutils literal notranslate"><span class="pre">id&gt;80000</span> <span class="pre">&amp;</span> <span class="pre">id&lt;=90000</span></code></p>
+<p>② <a class="reference external" href="http://apijson.cn:8080/head/%7B%22User%22:%7B%22id%7C%7B%7D%22:%22%3E90000,%3C=80000%22%7D%7D">“id|{}”:”&gt;90000,&lt;=80000”</a>.</p>
+<p>It’s the same as <code class="code docutils literal notranslate"><span class="pre">&quot;id{}&quot;:&quot;&gt;90000,&lt;=80000&quot;</span></code>. In SQL, it’sid&gt;80000 OR id&lt;=90000, meaning that id needs to be id&gt;90000 | id&lt;=80000</p>
+<p>③ <a class="reference external" href="http://apijson.cn:8080/head/%7B%22User%22:%7B%22id!%7B%7D%22:%5B82001,38710%5D%7D%7D">“id!{}”:[82001,38710]</a>.</p>
+<p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">id</span> <span class="pre">NOT</span> <span class="pre">IN(82001,38710)</span></code>, meaning id needs to be <code class="code docutils literal notranslate"><span class="pre">!</span> <span class="pre">(id=82001</span> <span class="pre">|</span> <span class="pre">id=38710)</span></code>.</p>
 </div></blockquote>
 </div>
 </div>
