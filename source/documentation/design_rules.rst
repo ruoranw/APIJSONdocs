@@ -7,14 +7,16 @@ This chapter introduces methods in API designs with APIJSON. These methods are:
 
 Methods are desired actions to be performed on identified resources. This chapter also include how these methods are mapped to HTTP methods.
 
-Base URL means the root address of the website. Everything that follows it is known as a URL path. All API paths are relative to the base URL.
+The *base_URL* is the root address of the website. Everything that follows it is known as a URL path. All API paths are relative to the base URL.
 
-1. Methods and API endpoints
+1. Methods and HTTP Mapping
 ----------------------------
 
 **GET** : A general way to retrieve resources.
 
-Base_url/get/
+.. role:: blue
+
+:blue:`base_url/get/`
 
 .. content-tabs::
 
@@ -29,7 +31,7 @@ Base_url/get/
              }
             }
 
-           // eg. Request a post with id=235 in table "Post":
+           // eg. Request a post with id = 235 in table "Post":
             {
              "Post"{
              "id": 235
@@ -63,7 +65,9 @@ Base_url/get/
 
 **HEAD** : A general way to retrieve the number of rows in a table satisfying the criteria specified in the request body.
 
-Base_url/head/
+.. role:: blue
+
+:blue:`base_url/head/`
 
 .. content-tabs::
 
@@ -107,124 +111,150 @@ Base_url/head/
           "msg":"success"
          }
 
-**GETS** : Get data with high security and confidentiality like bank accounts, birth date.
+**GETS** : Request for highly secured and confidential data like bank accounts, birth dates.
 
-Base_url/gets/
+.. role:: blue
+
+:blue:`base_url/gets/`
 
 .. content-tabs::
 
    .. tab-container:: tab1
        :title: Request
 
-        .. code-block:: json
+        .. code-block::
 
-           // You need to add “tag”: tag with the same level of post{}. Others are the same as **GET**.
+           // You need to nest a key-value pair
+
+           “tag”: tag
+
+           // at the top level of the request json object. The tag is usually the related table's name.
+
+           //Except that, the structure is the same as **GET**.
 
    .. tab-container:: tab2
        :title: Response
 
-        .. code-block:: json
+        .. code-block::
 
            // Same as **GET**
 
-**HEADS** : Get counts of confidential data(eg. bank account).
+**HEADS** : It's also used for getting counts except that it requests for highly secured resources(eg. bank accounts).
 
-Base_url/heads/
+.. role:: blue
+
+:blue:`base_url/heads/`
 
 .. content-tabs::
 
    .. tab-container:: tab1
        :title: Request
 
-       .. code-block:: json
+       .. code-block::
 
-          // You need to add “tag”: tag with the same level of post{}. Others are the same as HEAD.
+          // You need to nest a key-value pair
+
+           “tag”: tag
+
+          // at the top level of the request json object.
+
+          //Except that, the structure is the same as **HEAD**.
 
    .. tab-container:: tab2
        :title: Response
 
        .. code-block:: json
 
-          //  Same as HEAD.
+          //  Same as **HEAD**.
 
-**POST** : Add new data to the database.
+**POST** : The **POST** method creates new resouces under the specified parent resource(TableName).
 
-Base_url/post/
+.. role:: blue
+
+:blue:`base_url/post/`
 
 .. content-tabs::
 
    .. tab-container:: tab1
        :title: Request
 
-       .. code-block:: json
+       .. code-block::
 
           {
-          TableName:{…},
+          "TableName":{…
+          },
           "tag":tag
           }
 
-          // The id in {...} is generated automatically when table is built and can’t be set by the user.
+          // Note the id in the object "TableName":{...} has been generated automatically when table is built and can’t be set by the user here.
 
           // eg. A user with id = 38710 posts a new post：
+
           {
              "Post":{
                "userId":38710,
-               "content":"APIJSON,let interfaces and documents go to hell !"
-             },
+               "content":"APIJSON lets interfaces and documents go hell!"
+              },
              "tag":"Moment"
           }
 
    .. tab-container:: tab2
        :title: Response
 
-       .. code-block:: json
+       .. code-block::
 
           {
-           TableName:{
-             "code":200,
-             "msg":"success",
-             "id":38710
-           },
-           "code":200,
-           "msg":"success"
-        }
-        // eg.
-        {
            "Moment":{
              "code":200,
              "msg":"success",
-             "id":120
+             "id":...
            },
            "code":200,
            "msg":"success"
-        }
+          }
 
-**PUT** : Make changes to a specific item. Only change the part sent to server.
 
-Base_url/put/
+        // If the request is successful, it should return following object.
+
+          {
+             TableName:{
+               "code":200,
+               "msg":"success",
+               "id":38710
+             },
+             "code":200,
+             "msg":"success"
+          }
+
+**PUT** : The **PUT** method takes a request message containing a resource that updates the specific resource and its properties. It only updates the part that is contained in the request body.
+
+.. role:: blue
+
+:blue:`base_url/put/`
 
 .. content-tabs::
 
    .. tab-container:: tab1
        :title: Request
 
-       .. code-block:: json
+       .. code-block::
 
             {
-               TableName:{
+               "TableName":{
                  "id":id,
                  …
                },
                "tag":tag
             }
 
-            // You can also add multiple id as id{}.
+            // You need to either specify the id in the TableName object like the example above or add a id{} object in the request body.
 
-           // eg. Make changes to post content with id= 235:
+           // The following example makes request to update the content made by id = 235:
+
             {
                "Post":{
                  "id":235,
-                 "content":"APIJSON,let interfaces and documents go to hell !"
+                 "content":"APIJSON lets interfaces and documents go hell !"
                },
                "tag":"Post"
             }
@@ -234,18 +264,20 @@ Base_url/put/
 
         .. code-block:: json
 
-           \\ Same as POST.
+           \\ Same as **POST**.
 
-**DELETE** : Delete data.
+**DELETE** : The **DELETE** method deletes the specified resource.
 
-Base_url/delete/
+.. role:: blue
+
+:blue:`base_url/delete/`
 
 .. content-tabs::
 
    .. tab-container:: tab1
        :title: Request
 
-       .. code-block:: json
+       .. code-block::
 
           {
              TableName:{
@@ -253,9 +285,10 @@ Base_url/delete/
              },
              "tag":tag
           }
-          // You can also add multiple id as id{}.
+          // You need to either specify the id in the TableName object like the example above or add a id{} object in the request body.
 
-          // Or Delete contents with multiple id：
+          // The following example send a request to delete comments made by id = 100,110,120
+
           {
              "Comment":{
                "id{}":[100,110,120]
@@ -266,41 +299,47 @@ Base_url/delete/
    .. tab-container:: tab2
        :title: Response
 
-       .. code-block:: json
+       .. code-block::
 
           {
-             TableName:{
-               "id":id
-             },
-             "tag":tag
+           "TableName":{
+             "code":200,
+             "msg":"success",
+             "id[]":[...]
+             "count":3
+           },
+           "code":200,
+           "msg":"success"
           }
 
-          // You can also add multiple id as id{}.
+          // The response to the request in the example above
 
-          // Or Delete contents with multiple id：
           {
-             "Comment":{
-               "id{}":[100,110,120]
-             },
-             "tag":"Comment[]"
+          "Comment":{
+          "code":200,
+          "msg":"success",
+          "id[]":[100,110,120],
+          "count":3
+          },
+          "code":200,
+         "msg":"success"
           }
-
 
 **Note:**
 
-    1. TableName means the name of the table where you get data. It’ll respond with a JSON Object(the form is {....})with columns inside.
+    1. *TableName* means the name of the table that a user interacts with. It's a string with the first letter capitalized. It can be any combination of letters, numbers and underscores. As a key, its value is a jsonObject which may include columns' names in the table.
 
-    2. “Tag”:tag is needed when methods are not GET or HEAD. The tag after the colon is the key in JSON Object of making requests. Generally, it’s the name of the table you’re looking for.
+    2. :code:`“tag”:tag` needs to be included when the request method is neither **GET** nor **HEAD**. The value *tag* is the key of the returned jsonObject in the response body. Usually, it's the name of the related table.
 
-    3. GET, HEAD are methods for general data requests.They support versatile JSON Object structure. Other methods are used for requesting confidential data and the requesting JSON Object needs to be in the same form/order as that in the database. Otherwise, the request shall be denied.
+    3. The request form under **GET** and **HEAD** methods are very flexible. The request jsonObject can be nested many levels. However, other methods need to be constrained by adding tags, etc. The structure of the request body needs to conform resources at the backend.
 
-    4. GETS and GET, HEADS and HEAD return the same type of data. But the request form is a little different.
+    4. **GETS** and **GET**, **HEADS** and **HEAD** are the same type of operation. For both groups, the request bodies have something different, while the response bodies are the same.
 
-    5. For HTTP, all API methods (get,gets,head,heads,post,put,delete) make requests with HTTP POST.
+    5. In HTTP mapping, all ghe API methods above (get,gets,head,heads,post,put,delete) use HTTP **POST** verb.
 
-    6. All JSON Objects here are with {...} form. You can put items or objects in it.
+    6. All jsonObjects are seen as variables or folders with the form of :code:`{...}`. It can store objects or sub-variables.
 
-    7. Each object in the database has a unique address.
+    7. Each object in the request body is related to an  individually-addressable resource which has an unique path.
 
 
 2. How to make a request

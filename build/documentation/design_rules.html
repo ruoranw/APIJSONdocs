@@ -34,6 +34,7 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
   <link rel="stylesheet" href="../_static/contentui.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -90,7 +91,7 @@
 <p class="caption"><span class="caption-text">Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API design style guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#methods-and-api-endpoints">1. Methods and API endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#methods-and-http-mapping">1. Methods and HTTP Mapping</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-make-a-request">2. How to make a request</a></li>
 </ul>
 </li>
@@ -163,11 +164,11 @@
 <p>This chapter introduces methods in API designs with APIJSON. These methods are:</p>
 <p><strong>GET</strong>, <strong>HEAD</strong>, <strong>GETS</strong>, <strong>HEADS</strong>, <strong>POST</strong>, <strong>PUT</strong>, <strong>DELETE</strong>.</p>
 <p>Methods are desired actions to be performed on identified resources. This chapter also include how these methods are mapped to HTTP methods.</p>
-<p>Base URL means the root address of the website. Everything that follows it is known as a URL path. All API paths are relative to the base URL.</p>
-<div class="section" id="methods-and-api-endpoints">
-<h2>1. Methods and API endpoints<a class="headerlink" href="#methods-and-api-endpoints" title="Permalink to this headline">¶</a></h2>
+<p>The <em>base_URL</em> is the root address of the website. Everything that follows it is known as a URL path. All API paths are relative to the base URL.</p>
+<div class="section" id="methods-and-http-mapping">
+<h2>1. Methods and HTTP Mapping<a class="headerlink" href="#methods-and-http-mapping" title="Permalink to this headline">¶</a></h2>
 <p><strong>GET</strong> : A general way to retrieve resources.</p>
-<p>Base_url/get/</p>
+<p><span class="blue">base_url/get/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
 <p class="tab-title">Request</p>
@@ -178,7 +179,7 @@
   <span class="p">}</span>
  <span class="p">}</span>
 
-<span class="o">//</span> <span class="n">eg</span><span class="o">.</span> <span class="n">Request</span> <span class="n">a</span> <span class="n">post</span> <span class="k">with</span> <span class="nb">id</span><span class="o">=</span><span class="mi">235</span> <span class="ow">in</span> <span class="n">table</span> <span class="s2">&quot;Post&quot;</span><span class="p">:</span>
+<span class="o">//</span> <span class="n">eg</span><span class="o">.</span> <span class="n">Request</span> <span class="n">a</span> <span class="n">post</span> <span class="k">with</span> <span class="nb">id</span> <span class="o">=</span> <span class="mi">235</span> <span class="ow">in</span> <span class="n">table</span> <span class="s2">&quot;Post&quot;</span><span class="p">:</span>
  <span class="p">{</span>
   <span class="s2">&quot;Post&quot;</span><span class="p">{</span>
   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">235</span>
@@ -215,7 +216,7 @@
 </div>
 </div>
 <p><strong>HEAD</strong> : A general way to retrieve the number of rows in a table satisfying the criteria specified in the request body.</p>
-<p>Base_url/head/</p>
+<p><span class="blue">base_url/head/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
 <p class="tab-title">Request</p>
@@ -256,13 +257,19 @@
 </div>
 </div>
 </div>
-<p><strong>GETS</strong> : Get data with high security and confidentiality like bank accounts, birth date.</p>
-<p>Base_url/gets/</p>
+<p><strong>GETS</strong> : Request for highly secured and confidential data like bank accounts, birth dates.</p>
+<p><span class="blue">base_url/gets/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
 <p class="tab-title">Request</p>
 <blockquote>
-<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span>// You need to add “tag”: tag with the same level of post{}. Others are the same as **GET**.
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>// You need to nest a key-value pair
+
+“tag”: tag
+
+// at the top level of the request json object. The tag is usually the related table&#39;s name.
+
+//Except that, the structure is the same as **GET**.
 </pre></div>
 </div>
 </div></blockquote>
@@ -270,46 +277,54 @@
 <div class="tab-content docutils container" id="tab-tab2">
 <p class="tab-title">Response</p>
 <blockquote>
-<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span>// Same as **GET**
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Same</span> <span class="k">as</span> <span class="o">**</span><span class="n">GET</span><span class="o">**</span>
 </pre></div>
 </div>
 </div></blockquote>
 </div>
 </div>
-<p><strong>HEADS</strong> : Get counts of confidential data(eg. bank account).</p>
-<p>Base_url/heads/</p>
+<p><strong>HEADS</strong> : It’s also used for getting counts except that it requests for highly secured resources(eg. bank accounts).</p>
+<p><span class="blue">base_url/heads/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
 <p class="tab-title">Request</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>// You need to add “tag”: tag with the same level of post{}. Others are the same as HEAD.
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>// You need to nest a key-value pair
+
+ “tag”: tag
+
+// at the top level of the request json object.
+
+//Except that, the structure is the same as **HEAD**.
 </pre></div>
 </div>
 </div>
 <div class="tab-content docutils container" id="tab-tab2">
 <p class="tab-title">Response</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//  Same as HEAD.
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//  Same as **HEAD**.
 </pre></div>
 </div>
 </div>
 </div>
-<p><strong>POST</strong> : Add new data to the database.</p>
-<p>Base_url/post/</p>
+<p><strong>POST</strong> : The <strong>POST</strong> method creates new resouces under the specified parent resource(TableName).</p>
+<p><span class="blue">base_url/post/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
 <p class="tab-title">Request</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-TableName:{…},
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+&quot;TableName&quot;:{…
+},
 &quot;tag&quot;:tag
 }
 
-// The id in {...} is generated automatically when table is built and can’t be set by the user.
+// Note the id in the object &quot;TableName&quot;:{...} has been generated automatically when table is built and can’t be set by the user here.
 
 // eg. A user with id = 38710 posts a new post：
+
 {
    &quot;Post&quot;:{
      &quot;userId&quot;:38710,
-     &quot;content&quot;:&quot;APIJSON,let interfaces and documents go to hell !&quot;
-   },
+     &quot;content&quot;:&quot;APIJSON lets interfaces and documents go hell!&quot;
+    },
    &quot;tag&quot;:&quot;Moment&quot;
 }
 </pre></div>
@@ -317,49 +332,52 @@ TableName:{…},
 </div>
 <div class="tab-content docutils container" id="tab-tab2">
 <p class="tab-title">Response</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>  {
-   TableName:{
-     &quot;code&quot;:200,
-     &quot;msg&quot;:&quot;success&quot;,
-     &quot;id&quot;:38710
-   },
-   &quot;code&quot;:200,
-   &quot;msg&quot;:&quot;success&quot;
-}
-// eg.
-{
-   &quot;Moment&quot;:{
-     &quot;code&quot;:200,
-     &quot;msg&quot;:&quot;success&quot;,
-     &quot;id&quot;:120
-   },
-   &quot;code&quot;:200,
-   &quot;msg&quot;:&quot;success&quot;
-}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="p">{</span>
+   <span class="s2">&quot;Moment&quot;</span><span class="p">:{</span>
+     <span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+     <span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="o">...</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+   <span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span>
+  <span class="p">}</span>
+
+<span class="o">//</span> <span class="n">If</span> <span class="n">the</span> <span class="n">request</span> <span class="ow">is</span> <span class="n">successful</span><span class="p">,</span> <span class="n">it</span> <span class="n">should</span> <span class="k">return</span> <span class="n">following</span> <span class="nb">object</span><span class="o">.</span>
+
+  <span class="p">{</span>
+     <span class="n">TableName</span><span class="p">:{</span>
+       <span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+       <span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="mi">38710</span>
+     <span class="p">},</span>
+     <span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+     <span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span>
+  <span class="p">}</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p><strong>PUT</strong> : Make changes to a specific item. Only change the part sent to server.</p>
-<p>Base_url/put/</p>
+<p><strong>PUT</strong> : The <strong>PUT</strong> method takes a request message containing a resource that updates the specific resource and its properties. It only updates the part that is contained in the request body.</p>
+<p><span class="blue">base_url/put/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
 <p class="tab-title">Request</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span> {
-    TableName:{
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> {
+    &quot;TableName&quot;:{
       &quot;id&quot;:id,
       …
     },
     &quot;tag&quot;:tag
  }
 
- // You can also add multiple id as id{}.
+ // You need to either specify the id in the TableName object like the example above or add a id{} object in the request body.
 
-// eg. Make changes to post content with id= 235:
+// The following example makes request to update the content made by id = 235:
+
  {
     &quot;Post&quot;:{
       &quot;id&quot;:235,
-      &quot;content&quot;:&quot;APIJSON,let interfaces and documents go to hell !&quot;
+      &quot;content&quot;:&quot;APIJSON lets interfaces and documents go hell !&quot;
     },
     &quot;tag&quot;:&quot;Post&quot;
  }
@@ -369,53 +387,61 @@ TableName:{…},
 <div class="tab-content docutils container" id="tab-tab2">
 <p class="tab-title">Response</p>
 <blockquote>
-<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span>\\ Same as POST.
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span>\\ Same as **POST**.
 </pre></div>
 </div>
 </div></blockquote>
 </div>
 </div>
-<p><strong>DELETE</strong> : Delete data.</p>
-<p>Base_url/delete/</p>
+<p><strong>DELETE</strong> : The <strong>DELETE</strong> method deletes the specified resource.</p>
+<p><span class="blue">base_url/delete/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
 <p class="tab-title">Request</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-   TableName:{
-     &quot;id&quot;:id
-   },
-   &quot;tag&quot;:tag
-}
-// You can also add multiple id as id{}.
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="n">TableName</span><span class="p">:{</span>
+     <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="nb">id</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;tag&quot;</span><span class="p">:</span><span class="n">tag</span>
+<span class="p">}</span>
+<span class="o">//</span> <span class="n">You</span> <span class="n">need</span> <span class="n">to</span> <span class="n">either</span> <span class="n">specify</span> <span class="n">the</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">TableName</span> <span class="nb">object</span> <span class="n">like</span> <span class="n">the</span> <span class="n">example</span> <span class="n">above</span> <span class="ow">or</span> <span class="n">add</span> <span class="n">a</span> <span class="nb">id</span><span class="p">{}</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">request</span> <span class="n">body</span><span class="o">.</span>
 
-// Or Delete contents with multiple id：
-{
-   &quot;Comment&quot;:{
-     &quot;id{}&quot;:[100,110,120]
-   },
-   &quot;tag&quot;:&quot;Comment[]&quot;
-}
+<span class="o">//</span> <span class="n">The</span> <span class="n">following</span> <span class="n">example</span> <span class="n">send</span> <span class="n">a</span> <span class="n">request</span> <span class="n">to</span> <span class="n">delete</span> <span class="n">comments</span> <span class="n">made</span> <span class="n">by</span> <span class="nb">id</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">120</span>
+
+<span class="p">{</span>
+   <span class="s2">&quot;Comment&quot;</span><span class="p">:{</span>
+     <span class="s2">&quot;id</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">:[</span><span class="mi">100</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">120</span><span class="p">]</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;tag&quot;</span><span class="p">:</span><span class="s2">&quot;Comment[]&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
 <div class="tab-content docutils container" id="tab-tab2">
 <p class="tab-title">Response</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-   TableName:{
-     &quot;id&quot;:id
-   },
-   &quot;tag&quot;:tag
-}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="p">{</span>
+  <span class="s2">&quot;TableName&quot;</span><span class="p">:{</span>
+    <span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+    <span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;id[]&quot;</span><span class="p">:[</span><span class="o">...</span><span class="p">]</span>
+    <span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="mi">3</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+  <span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span>
+ <span class="p">}</span>
 
-// You can also add multiple id as id{}.
+ <span class="o">//</span> <span class="n">The</span> <span class="n">response</span> <span class="n">to</span> <span class="n">the</span> <span class="n">request</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">example</span> <span class="n">above</span>
 
-// Or Delete contents with multiple id：
-{
-   &quot;Comment&quot;:{
-     &quot;id{}&quot;:[100,110,120]
-   },
-   &quot;tag&quot;:&quot;Comment[]&quot;
-}
+ <span class="p">{</span>
+ <span class="s2">&quot;Comment&quot;</span><span class="p">:{</span>
+ <span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+ <span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;id[]&quot;</span><span class="p">:[</span><span class="mi">100</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">120</span><span class="p">],</span>
+ <span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="mi">3</span>
+ <span class="p">},</span>
+ <span class="s2">&quot;code&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span>
+<span class="s2">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;success&quot;</span>
+ <span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -423,13 +449,13 @@ TableName:{…},
 <p><strong>Note:</strong></p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>TableName means the name of the table where you get data. It’ll respond with a JSON Object(the form is {….})with columns inside.</p></li>
-<li><p>“Tag”:tag is needed when methods are not GET or HEAD. The tag after the colon is the key in JSON Object of making requests. Generally, it’s the name of the table you’re looking for.</p></li>
-<li><p>GET, HEAD are methods for general data requests.They support versatile JSON Object structure. Other methods are used for requesting confidential data and the requesting JSON Object needs to be in the same form/order as that in the database. Otherwise, the request shall be denied.</p></li>
-<li><p>GETS and GET, HEADS and HEAD return the same type of data. But the request form is a little different.</p></li>
-<li><p>For HTTP, all API methods (get,gets,head,heads,post,put,delete) make requests with HTTP POST.</p></li>
-<li><p>All JSON Objects here are with {…} form. You can put items or objects in it.</p></li>
-<li><p>Each object in the database has a unique address.</p></li>
+<li><p><em>TableName</em> means the name of the table that a user interacts with. It’s a string with the first letter capitalized. It can be any combination of letters, numbers and underscores. As a key, its value is a jsonObject which may include columns’ names in the table.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">“tag”:tag</span></code> needs to be included when the request method is neither <strong>GET</strong> nor <strong>HEAD</strong>. The value <em>tag</em> is the key of the returned jsonObject in the response body. Usually, it’s the name of the related table.</p></li>
+<li><p>The request form under <strong>GET</strong> and <strong>HEAD</strong> methods are very flexible. The request jsonObject can be nested many levels. However, other methods need to be constrained by adding tags, etc. The structure of the request body needs to conform resources at the backend.</p></li>
+<li><p><strong>GETS</strong> and <strong>GET</strong>, <strong>HEADS</strong> and <strong>HEAD</strong> are the same type of operation. For both groups, the request bodies have something different, while the response bodies are the same.</p></li>
+<li><p>In HTTP mapping, all ghe API methods above (get,gets,head,heads,post,put,delete) use HTTP <strong>POST</strong> verb.</p></li>
+<li><p>All jsonObjects are seen as variables or folders with the form of <code class="code docutils literal notranslate"><span class="pre">{...}</span></code>. It can store objects or sub-variables.</p></li>
+<li><p>Each object in the request body is related to an  individually-addressable resource which has an unique path.</p></li>
 </ol>
 </div></blockquote>
 </div>
