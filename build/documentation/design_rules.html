@@ -92,7 +92,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API design style guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#methods-and-http-mapping">1. Methods and HTTP Mapping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#how-to-make-a-request">2. How to make a request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#endpoint-format">2. Endpoint Format</a></li>
 </ul>
 </li>
 </ul>
@@ -459,29 +459,29 @@
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="how-to-make-a-request">
-<h2>2. How to make a request<a class="headerlink" href="#how-to-make-a-request" title="Permalink to this headline">¶</a></h2>
-<p><strong>Get data in arrays:</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key[]&quot;:{}</span></code></p>
-<p>The part after the colon is a JSONObject where “key” is optional. When key is the same as the table name, the JSONObject will be in a simplified form. For example: <code class="code docutils literal notranslate"><span class="pre">{Table:{Content}}</span></code> will be written as <code class="code docutils literal notranslate"><span class="pre">{Content}</span></code>.</p>
+<div class="section" id="endpoint-format">
+<h2>2. Endpoint Format<a class="headerlink" href="#endpoint-format" title="Permalink to this headline">¶</a></h2>
+<p><strong>Get data in an array:</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{}}}</span></code></p>
+<p>The part after the colon is a JSONObject. The <code class="code docutils literal notranslate"><span class="pre">key</span></code> is optional. When <code class="code docutils literal notranslate"><span class="pre">key</span></code> is as the same as the <code class="code docutils literal notranslate"><span class="pre">tableName</span></code>, the JSONObject will be in a simplified form. For example: <code class="code docutils literal notranslate"><span class="pre">{&quot;User[]&quot;:{&quot;User&quot;:{&quot;id&quot;,...}}}</span></code> will be written as <code class="code docutils literal notranslate"><span class="pre">{&quot;User[]&quot;:{&quot;id&quot;,...}}</span></code>.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
-<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%7D%7D%7D">{“User[]”:{“User”:{}}}</a></p>
-<p>This is used for getting data from a user. Here, key and tablename are all “User”, then <code class="code docutils literal notranslate"><span class="pre">{&quot;User&quot;:{&quot;id&quot;,</span> <span class="pre">...}}</span></code> will be written as <code class="code docutils literal notranslate"><span class="pre">{&quot;id&quot;,</span> <span class="pre">...}</span></code></p>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%7D%7D%7D">/get/{“User[]”:{“count”:3,”User”:{}}}</a></p>
+<p>In this example, the request is to <strong>GET</strong> 3 users’ information. The return includes 3 users information with all categories saved in an array.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Get data that meets specific conditions:</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key{}&quot;:[]</span></code></p>
-<p>The part after the colon is a JSONArray with conditions inside.</p>
+<p><strong>Get data that meets specific conditions:</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{&quot;key2{}&quot;:[]}}}</span></code></p>
+<p>Specifically in this part: <code class="code docutils literal notranslate"><span class="pre">&quot;id{}&quot;:[]</span></code>, the part after colon is a JSONArray which contains key2’s values. This part is to specify the conditions that the returning body should satisfy.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
-<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%5B38710,82001,70793%5D%7D%7D%7D">“id{}”:[38710,82001,70793]</a></p>
-<p>In SQL, this would be id <code class="code docutils literal notranslate"><span class="pre">IN(38710,82001,70793)</span></code>. It means getting data with id equals 38710,82001,70793.</p>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%5B38710,82001,70793%5D%7D%7D%7D">/get/{“User[]”:{“count”:3,”User”:{“id{}”:[38710,82001,70793]}}}</a></p>
+<p>This example shows how to get users’s information with id equals 38710,82001,70793.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />

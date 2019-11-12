@@ -342,33 +342,31 @@ The *base_URL* is the root address of the website. Everything that follows it is
     7. Each object in the request body is related to an  individually-addressable resource which has an unique path.
 
 
-2. How to make a request
-------------------------
+2. Endpoint Format
+------------------
 
-**Get data in arrays:** :code:`"key[]":{}`
+**Get data in an array:** :code:`/get/{"key[]":{"tableName":{}}}`
 
-The part after the colon is a JSONObject where "key" is optional. When key is the same as the table name, the JSONObject will be in a simplified form. For example: :code:`{Table:{Content}}` will be written as :code:`{Content}`.
+The part after the colon is a JSONObject. The :code:`key` is optional. When :code:`key` is as the same as the :code:`tableName`, the JSONObject will be in a simplified form. For example: :code:`{"User[]":{"User":{"id",...}}}` will be written as :code:`{"User[]":{"id",...}}`.
 
 .. toggle-header::
     :header: Example
 
-       `{"User[]":{"User":{}}} <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%7D%7D%7D>`_
+       `/get/{"User[]":{"count":3,"User":{}}} <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%7D%7D%7D>`_
 
-       This is used for getting data from a user. Here, key and tablename are all “User”, then :code:`{"User":{"id", ...}}` will be written as :code:`{"id", ...}`
-
-
+       In this example, the request is to **GET** 3 users' information. The return includes 3 users information with all categories saved in an array.
 ----------------
 
-**Get data that meets specific conditions:** :code:`"key{}":[]`
+**Get data that meets specific conditions:** :code:`/get/{"key[]":{"tableName":{"key2{}":[]}}}`
 
-The part after the colon is a JSONArray with conditions inside.
+Specifically in this part: :code:`"id{}":[]`, the part after colon is a JSONArray which contains key2's values. This part is to specify the conditions that the returning body should satisfy.
 
 .. toggle-header::
     :header: Example
 
-       `"id{}":[38710,82001,70793] <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%5B38710,82001,70793%5D%7D%7D%7D>`_
+       `/get/{"User[]":{"count":3,"User":{"id{}":[38710,82001,70793]}}} <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%5B38710,82001,70793%5D%7D%7D%7D>`_
 
-       In SQL, this would be id :code:`IN(38710,82001,70793)`. It means getting data with id equals 38710,82001,70793.
+       This example shows how to get users's information with id equals 38710,82001,70793.
 
 ----------------
 
