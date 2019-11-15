@@ -359,7 +359,7 @@ The part after the colon is a JSONObject. The :code:`key` is optional. When :cod
 
 **Get data that meets specific conditions:** :code:`/get/{"key[]":{"tableName":{"key2{}":[]}}}`
 
-Specifically in this part: :code:`"id{}":[]`, the part after colon is a JSONArray which contains key2's values. This part is to specify the conditions that the returning body should satisfy.
+Specifically in this part: :code:`"id{}":[]`, the part after the colon is a JSONArray which contains :code:`key2`'s values. This part is to specify the conditions that the returning body should satisfy.
 
 .. toggle-header::
     :header: Example
@@ -370,51 +370,52 @@ Specifically in this part: :code:`"id{}":[]`, the part after colon is a JSONArra
 
 ----------------
 
-**Get data with comparison operation：** :code:`"key{}":"condition0,condition1..."`
+**Get data with comparison operation：** :code:`/get/{"key[]":{"tableName":{"id{}":"<=80000,>90000"}}}`
 
-Conditions can be any SQL comparision operation. Use''to include any non-number characters.
-
-.. toggle-header::
-    :header: Example
-
-       `"id{}":"<=80000,>90000" <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%22%3C=80000,%3E90000%22%7D%7D%7D>`_
-
-       In SQL, it'd be id<=80000 OR id>90000, which means get User array with id<=80000 | id>90000
-
-----------------
-
-**Get data that contains an element:** :code:`"key<>":Object` => :code:`"key<>":[Object] `
-
-*key* must be a JSONArray while *Object* cannot be JSON.
+Like the comparison operation in SQL, it's used here to get resources in a range. It dosn't need to be numbers however.
 
 .. toggle-header::
     :header: Example
 
-       `"contactIdList<>":38710 <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22contactIdList%3C%3E%22:38710%7D%7D%7D>`_
+       `/get/{"User[]":{"count":3,"User":{"id{}":"<=80000,>90000"}}} <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%22%3C=80000,%3E90000%22%7D%7D%7D>`_
 
-       In SQL, this would :code:`bejson_contains(contactIdList,38710)`.It means find data of the User whose contactList contains 38710.
+       In SQL, it'd be :code:`id<=80000 OR id>90000`, which means get User array with id<=80000 | id>90000
 
 ----------------
 
-**See if it exists** :code:`"key}{@":{"from":"Table","Table":{ ... }}`
+**Get data that contains an element:** :code:`/get/{"key[]":{"User":{"key2<>":[object]}}}`
 
-*}{* means EXISTS; *key* is the one you want to check.
+This also used when the user wants to get data that meets specific conditions. :code:`key2` must be a JSONArray while :code:`object` cannot be JSON.
 
 .. toggle-header::
     :header: Example
 
-       `"id}{@":{
-                 "from":"Comment",
-                 "Comment":{
-                    "momentId":15
-                 }
-                } <http://apijson.cn:8080/get/%7B%22User%22:%7B%22id%7D%7B@%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22momentId%22:15%7D%7D%7D%7D>`_
+       `"/get/{"User[]":{"count":3,"User":{"contactIdList<>":38710}}}":38710 <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22contactIdList%3C%3E%22:38710%7D%7D%7D>`_
 
-       WHERE EXISTS(SELECT * FROM Comment WHERE momentId=15)
+       In this example, it requests 3 User arrays whose contactIdList contains 38710. In SQL, this would be :code:`json_contains(contactIdList,38710)`.
 
 ----------------
 
-**Include functions in parameters** :code:`"key()":"function (key0,key1...)"`
+**See if it exists** :code:`/get/{"key":{"key2}{@":{"from":"tableName","tableName":{...}}}}`
+
+In this request url, *}{* means EXISTS; *key2* is the item you want to check.
+
+.. toggle-header::
+    :header: Example
+
+       `{"User":
+          {"id}{@":{
+              "from":"Comment",
+              "Comment":{"momentId":15}
+              }
+              }
+              } <http://apijson.cn:8080/get/%7B%22User%22:%7B%22id%7D%7B@%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22momentId%22:15%7D%7D%7D%7D>`_
+
+       In this example, the request is to check if the id whose :code:`momentId = 15` exists. The SQL form would be :code:`WHERE EXISTS(SELECT * FROM Comment WHERE momentId=15)`
+
+----------------
+
+**Include functions in url parameters** :code:`/get/{"Table":{"key":value, key()":"function (key0,key1...)}"`
 
 This will trigger the back-end function(JSONObject request, String key0, String key1...)to get or testify data.
 
@@ -423,9 +424,31 @@ Use - and + to show the order of priority: analyze key-() > analyze the current 
 .. toggle-header::
     :header: Example
 
-       `"isPraised()":"isContain(praiseUserIdList,userId)" <http://apijson.cn:8080/get/%7B%22Moment%22:%7B%22id%22:301,%22isPraised()%22:%22isContain(praiseUserIdList,userId)%22%7D%7D>`_
+       `/get/{"Moment":{"id":301,"isPraised()":"isContain(praiseUserIdList,userId)"}} <http://apijson.cn:8080/get/%7B%22Moment%22:%7B%22id%22:301,%22isPraised()%22:%22isContain(praiseUserIdList,userId)%22%7D%7D>`_
 
        This will use function boolean :code:`isContain(JSONObject request, String array, String value)`. In this case, client will get :code:`“is praised”: true` (In this case, client use function to testify if a user clicked ‘like’ button for a post.)
+
+------------------
+
+**Refer a value**
+
+.. code-block:: json
+
+    "key@":"key0/key1/.../refKey"
+
+Use forward slash to show the path. The part before the colon is the key that wants to refer. The path after the colon starts with the parent level of the key.
+
+.. toggle-header::
+    :header: Example
+
+       `"Moment":{
+              "userId":38710
+              },
+        "User":{
+              "id@":"/Moment/userId"
+              } <http://apijson.cn:8080/get/%7B%22User%22:%7B%22id@%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22@column%22:%22min(userId)%22%7D%7D%7D%7D>`_
+
+       In this example, the value of :code:`id` in :code:`User` refer to the :code:`userId` in :code:`Moment`, which means :code:`User.id = Moment.userId`. After the request is sent, :code:`"id@":"/Moment/userId"` will be :code:`"id":38710`.
 
 ------------------
 

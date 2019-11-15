@@ -474,7 +474,7 @@
 </div>
 <hr class="docutils" />
 <p><strong>Get data that meets specific conditions:</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{&quot;key2{}&quot;:[]}}}</span></code></p>
-<p>Specifically in this part: <code class="code docutils literal notranslate"><span class="pre">&quot;id{}&quot;:[]</span></code>, the part after colon is a JSONArray which contains key2’s values. This part is to specify the conditions that the returning body should satisfy.</p>
+<p>Specifically in this part: <code class="code docutils literal notranslate"><span class="pre">&quot;id{}&quot;:[]</span></code>, the part after the colon is a JSONArray which contains <code class="code docutils literal notranslate"><span class="pre">key2</span></code>’s values. This part is to specify the conditions that the returning body should satisfy.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>
@@ -485,54 +485,53 @@
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Get data with comparison operation：</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key{}&quot;:&quot;condition0,condition1...&quot;</span></code></p>
-<p>Conditions can be any SQL comparision operation. Use’‘to include any non-number characters.</p>
+<p><strong>Get data with comparison operation：</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{&quot;id{}&quot;:&quot;&lt;=80000,&gt;90000&quot;}}}</span></code></p>
+<p>Like the comparison operation in SQL, it’s used here to get resources in a range. It dosn’t need to be numbers however.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
-<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%22%3C=80000,%3E90000%22%7D%7D%7D">“id{}”:”&lt;=80000,&gt;90000”</a></p>
-<p>In SQL, it’d be id&lt;=80000 OR id&gt;90000, which means get User array with id&lt;=80000 | id&gt;90000</p>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%22%3C=80000,%3E90000%22%7D%7D%7D">/get/{“User[]”:{“count”:3,”User”:{“id{}”:”&lt;=80000,&gt;90000”}}}</a></p>
+<p>In SQL, it’d be <code class="code docutils literal notranslate"><span class="pre">id&lt;=80000</span> <span class="pre">OR</span> <span class="pre">id&gt;90000</span></code>, which means get User array with id&lt;=80000 | id&gt;90000</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Get data that contains an element:</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key&lt;&gt;&quot;:Object</span></code> =&gt; :code:<a href="#id1"><span class="problematic" id="id2">`</span></a>”key&lt;&gt;”:[Object] `</p>
-<p><em>key</em> must be a JSONArray while <em>Object</em> cannot be JSON.</p>
+<p><strong>Get data that contains an element:</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;User&quot;:{&quot;key2&lt;&gt;&quot;:[object]}}}</span></code></p>
+<p>This also used when the user wants to get data that meets specific conditions. <code class="code docutils literal notranslate"><span class="pre">key2</span></code> must be a JSONArray while <code class="code docutils literal notranslate"><span class="pre">object</span></code> cannot be JSON.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
-<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22contactIdList%3C%3E%22:38710%7D%7D%7D">“contactIdList&lt;&gt;”:38710</a></p>
-<p>In SQL, this would <code class="code docutils literal notranslate"><span class="pre">bejson_contains(contactIdList,38710)</span></code>.It means find data of the User whose contactList contains 38710.</p>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22contactIdList%3C%3E%22:38710%7D%7D%7D">“/get/{“User[]”:{“count”:3,”User”:{“contactIdList&lt;&gt;”:38710}}}”:38710</a></p>
+<p>In this example, it requests 3 User arrays whose contactIdList contains 38710. In SQL, this would be <code class="code docutils literal notranslate"><span class="pre">json_contains(contactIdList,38710)</span></code>.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>See if it exists</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key}{&#64;&quot;:{&quot;from&quot;:&quot;Table&quot;,&quot;Table&quot;:{</span> <span class="pre">...</span> <span class="pre">}}</span></code></p>
-<p><em>}{</em> means EXISTS; <em>key</em> is the one you want to check.</p>
+<p><strong>See if it exists</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key&quot;:{&quot;key2}{&#64;&quot;:{&quot;from&quot;:&quot;tableName&quot;,&quot;tableName&quot;:{...}}}}</span></code></p>
+<p>In this request url, <em>}{</em> means EXISTS; <em>key2</em> is the item you want to check.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
-<div><dl>
-<dt><a href="#id3"><span class="problematic" id="id4">`</span></a>”id}{&#64;”:{</dt><dd><blockquote>
-<div><p>“from”:”Comment”,
-“Comment”:{</p>
-<blockquote>
-<div><p>“momentId”:15</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p>} &lt;<a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%22:%7B%22id%7D%7B&#64;%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22momentId%22:15%7D%7D%7D%7D">http://apijson.cn:8080/get/%7B%22User%22:%7B%22id%7D%7B&#64;%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22momentId%22:15%7D%7D%7D%7D</a>&gt;`_</p>
+<div><dl class="simple">
+<dt><a href="#id1"><span class="problematic" id="id2">`</span></a>{“User”:</dt><dd><dl class="simple">
+<dt>{“id}{&#64;”:{</dt><dd><p>“from”:”Comment”,
+“Comment”:{“momentId”:15}
+}
+}
+} &lt;<a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%22:%7B%22id%7D%7B&#64;%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22momentId%22:15%7D%7D%7D%7D">http://apijson.cn:8080/get/%7B%22User%22:%7B%22id%7D%7B&#64;%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22momentId%22:15%7D%7D%7D%7D</a>&gt;`_</p>
 </dd>
 </dl>
-<p>WHERE EXISTS(SELECT * FROM Comment WHERE momentId=15)</p>
+</dd>
+</dl>
+<p>In this example, the request is to check if the id whose <code class="code docutils literal notranslate"><span class="pre">momentId</span> <span class="pre">=</span> <span class="pre">15</span></code> exists. The SQL form would be <code class="code docutils literal notranslate"><span class="pre">WHERE</span> <span class="pre">EXISTS(SELECT</span> <span class="pre">*</span> <span class="pre">FROM</span> <span class="pre">Comment</span> <span class="pre">WHERE</span> <span class="pre">momentId=15)</span></code></p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Include functions in parameters</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key()&quot;:&quot;function</span> <span class="pre">(key0,key1...)&quot;</span></code></p>
+<p><strong>Include functions in url parameters</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;Table&quot;:{&quot;key&quot;:value,</span> <span class="pre">key()&quot;:&quot;function</span> <span class="pre">(key0,key1...)}&quot;</span></code></p>
 <p>This will trigger the back-end function(JSONObject request, String key0, String key1…)to get or testify data.</p>
 <p>Use - and + to show the order of priority: analyze key-() &gt; analyze the current object &gt; analyze key() &gt; analyze child object &gt; analyze key+()</p>
 <div class="toggle-header docutils container">
@@ -540,8 +539,34 @@
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
-<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22Moment%22:%7B%22id%22:301,%22isPraised()%22:%22isContain(praiseUserIdList,userId)%22%7D%7D">“isPraised()”:”isContain(praiseUserIdList,userId)”</a></p>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22Moment%22:%7B%22id%22:301,%22isPraised()%22:%22isContain(praiseUserIdList,userId)%22%7D%7D">/get/{“Moment”:{“id”:301,”isPraised()”:”isContain(praiseUserIdList,userId)”}}</a></p>
 <p>This will use function boolean <code class="code docutils literal notranslate"><span class="pre">isContain(JSONObject</span> <span class="pre">request,</span> <span class="pre">String</span> <span class="pre">array,</span> <span class="pre">String</span> <span class="pre">value)</span></code>. In this case, client will get <code class="code docutils literal notranslate"><span class="pre">“is</span> <span class="pre">praised”:</span> <span class="pre">true</span></code> (In this case, client use function to testify if a user clicked ‘like’ button for a post.)</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p><strong>Refer a value</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>&quot;key@&quot;:&quot;key0/key1/.../refKey&quot;
+</pre></div>
+</div>
+<p>Use forward slash to show the path. The part before the colon is the key that wants to refer. The path after the colon starts with the parent level of the key.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><dl>
+<dt><a href="#id3"><span class="problematic" id="id4">`</span></a>”Moment”:{</dt><dd><blockquote>
+<div><p>“userId”:38710
+},</p>
+</div></blockquote>
+<dl class="simple">
+<dt>“User”:{</dt><dd><p>“id&#64;”:”/Moment/userId”
+} &lt;<a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%22:%7B%22id&#64;%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22&#64;column%22:%22min(userId)%22%7D%7D%7D%7D">http://apijson.cn:8080/get/%7B%22User%22:%7B%22id&#64;%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22&#64;column%22:%22min(userId)%22%7D%7D%7D%7D</a>&gt;`_</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>In this example, the value of <code class="code docutils literal notranslate"><span class="pre">id</span></code> in <code class="code docutils literal notranslate"><span class="pre">User</span></code> refer to the <code class="code docutils literal notranslate"><span class="pre">userId</span></code> in <code class="code docutils literal notranslate"><span class="pre">Moment</span></code>, which means <code class="code docutils literal notranslate"><span class="pre">User.id</span> <span class="pre">=</span> <span class="pre">Moment.userId</span></code>. After the request is sent, <code class="code docutils literal notranslate"><span class="pre">&quot;id&#64;&quot;:&quot;/Moment/userId&quot;</span></code> will be <code class="code docutils literal notranslate"><span class="pre">&quot;id&quot;:38710</span></code>.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
