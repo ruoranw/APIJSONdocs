@@ -92,7 +92,8 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API design style guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#methods-and-http-mapping">1. Methods and HTTP Mapping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#endpoint-format">2. Endpoint Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#endpoints-format">2. Endpoints Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-in-string-functions">3. Build-in string functions</a></li>
 </ul>
 </li>
 </ul>
@@ -459,8 +460,8 @@
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="endpoint-format">
-<h2>2. Endpoint Format<a class="headerlink" href="#endpoint-format" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="endpoints-format">
+<h2>2. Endpoints Format<a class="headerlink" href="#endpoints-format" title="Permalink to this headline">¶</a></h2>
 <p><strong>Get data in an array:</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{}}}</span></code></p>
 <p>The part after the colon is a JSONObject. The <code class="code docutils literal notranslate"><span class="pre">key</span></code> is optional. When <code class="code docutils literal notranslate"><span class="pre">key</span></code> is as the same as the <code class="code docutils literal notranslate"><span class="pre">tableName</span></code>, the JSONObject will be in a simplified form. For example: <code class="code docutils literal notranslate"><span class="pre">{&quot;User[]&quot;:{&quot;User&quot;:{&quot;id&quot;,...}}}</span></code> will be written as <code class="code docutils literal notranslate"><span class="pre">{&quot;User[]&quot;:{&quot;id&quot;,...}}</span></code>.</p>
 <div class="toggle-header docutils container">
@@ -570,7 +571,7 @@
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Subquery</strong></p>
+<p><strong>Subquery expression</strong></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>&quot;key@&quot;:{
     &quot;range&quot;: &quot;ALL&quot;,
     &quot;from&quot;:&quot;Table&quot;,
@@ -647,13 +648,13 @@
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
-<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22Comment%22:%7B%22&#64;column%22:%22id,toId:parentId%22,%22id%22:51%7D%7D">“&#64;column”:”toId:parentId”</a></p>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22Comment%22:%7B%22&#64;column%22:%22id,toId:parentId%22,%22id%22:51%7D%7D">/get/{“Comment”:{“&#64;column”:”id,toId:parentId”,”id”:51}}</a></p>
 <p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">toId</span> <span class="pre">AS</span> <span class="pre">parentId</span></code>. It’ll return <em>parentID</em> instead of <em>toID</em>.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Add / expand an item</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key+&quot;:Object</span></code></p>
-<p>The type of Object is decided by key. Types can be <strong>Number</strong>, <strong>String</strong>, <strong>JSONArray</strong>. Forms are 82001,”apijson”,[“url0”,”url1”] respectively. It’s only applicable to <strong>PUT</strong> request.</p>
+<p><strong>Add / expand an item</strong> <code class="code docutils literal notranslate"><span class="pre">&quot;key+&quot;:number/string/array...</span></code></p>
+<p>The type of value on the right of the colon is decided by key. Types can be <strong>Number</strong> (such as 82001), <strong>String</strong> (such as “url0”), <strong>JSONArray</strong> (such as [“url0”,”url1”]). The method can only be <strong>PUT</strong>.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>
@@ -664,36 +665,93 @@
 <dd class="field-odd"><p><cite>“praiseUserIdList+”:[82001]</cite></p>
 </dd>
 </dl>
-<p>In SQL, it’s json_insert(praiseUserIdList,82001). Add an id that praised the post.</p>
+<p>In this example, add id 82001 to the praiser’s list. In SQL, it should be <code class="code docutils literal notranslate"><span class="pre">json_insert(praiseUserIdList,82001)</span></code>.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Delete / decrease an item</strong> <code class="code docutils literal notranslate"><span class="pre">“Key-”:object</span></code></p>
-<p>It’s the contrary of “key+”.</p>
+<p><strong>Delete / decrease an item</strong> <code class="code docutils literal notranslate"><span class="pre">“Key-”:number/string/array...</span></code></p>
+<p>It has the contrary function of <code class="code docutils literal notranslate"><span class="pre">“key+”</span></code>.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
 <div><p><code class="code docutils literal notranslate"><span class="pre">&quot;balance-&quot;:100.00</span></code></p>
-<p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">balance</span> <span class="pre">=</span> <span class="pre">balance</span> <span class="pre">-</span> <span class="pre">100.00</span></code>, meaning there’s 100 less in balance.</p>
+<p>This example subtract 100 in the balance. In SQL, it would be <code class="code docutils literal notranslate"><span class="pre">balance</span> <span class="pre">=</span> <span class="pre">balance</span> <span class="pre">-</span> <span class="pre">100.00</span></code>.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Operations</strong> <code class="code docutils literal notranslate"><span class="pre">&amp;,|,!</span></code></p>
-<p>They’re used in logic operations. It’s the same as <strong>AND</strong>, <strong>OR</strong>, <strong>NOT</strong> in SQL respectively.</p>
-<p>By default, for the same key, it’s ‘|’ (OR)operation among conditions; for different keys, the default operation among conditions is ‘&amp;’(AND).</p>
+<p><strong>Logical Operators</strong> <code class="code docutils literal notranslate"><span class="pre">&amp;,|,!</span></code></p>
+<p><code class="code docutils literal notranslate"><span class="pre">&amp;,|,!</span></code> refer to <strong>AND</strong>, <strong>OR</strong>, <strong>NOT</strong> in SQL respectively. The basic form to use them are: <code class="code docutils literal notranslate"><span class="pre">&quot;key&amp;{}&quot;:&quot;conditions&quot;</span></code>, <code class="code docutils literal notranslate"><span class="pre">&quot;key|{}&quot;:&quot;conditions&quot;</span></code>, <code class="code docutils literal notranslate"><span class="pre">&quot;key!{}&quot;:Object</span></code>.</p>
+<p>By default, conditions of the same key are connected with <code class="code docutils literal notranslate"><span class="pre">|</span></code> operator. As for different <code class="code docutils literal notranslate"><span class="pre">&quot;key&quot;:&quot;conditons&quot;`pairs,</span> <span class="pre">the</span> <span class="pre">default</span> <span class="pre">operator</span> <span class="pre">among</span> <span class="pre">them</span> <span class="pre">is</span> <span class="pre">:code:`&amp;</span></code>.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
-<div><p>① <a class="reference external" href="http://apijson.cn:8080/head/%7B%22User%22:%7B%22id&amp;%7B%7D%22:%22%3E80000,%3C=90000%22%7D%7D">“id&amp;{}”:”&gt;80000,&lt;=90000”</a></p>
+<div><p>① <a class="reference external" href="http://apijson.cn:8080/head/%7B%22User%22:%7B%22id&amp;%7B%7D%22:%22%3E80000,%3C=90000%22%7D%7D">/head/{“User”:{“id&amp;{}”:”&gt;80000,&lt;=90000”}}</a></p>
 <p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">id&gt;80000</span> <span class="pre">AND</span> <span class="pre">id&lt;=90000</span></code>, meaning id needs to be <code class="code docutils literal notranslate"><span class="pre">id&gt;80000</span> <span class="pre">&amp;</span> <span class="pre">id&lt;=90000</span></code></p>
-<p>② <a class="reference external" href="http://apijson.cn:8080/head/%7B%22User%22:%7B%22id%7C%7B%7D%22:%22%3E90000,%3C=80000%22%7D%7D">“id|{}”:”&gt;90000,&lt;=80000”</a>.</p>
-<p>It’s the same as <code class="code docutils literal notranslate"><span class="pre">&quot;id{}&quot;:&quot;&gt;90000,&lt;=80000&quot;</span></code>. In SQL, it’sid&gt;80000 OR id&lt;=90000, meaning that id needs to be id&gt;90000 | id&lt;=80000</p>
-<p>③ <a class="reference external" href="http://apijson.cn:8080/head/%7B%22User%22:%7B%22id!%7B%7D%22:%5B82001,38710%5D%7D%7D">“id!{}”:[82001,38710]</a>.</p>
-<p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">id</span> <span class="pre">NOT</span> <span class="pre">IN(82001,38710)</span></code>, meaning id needs to be <code class="code docutils literal notranslate"><span class="pre">!</span> <span class="pre">(id=82001</span> <span class="pre">|</span> <span class="pre">id=38710)</span></code>.</p>
+<p>② <a class="reference external" href="http://apijson.cn:8080/head/%7B%22User%22:%7B%22id%7C%7B%7D%22:%22%3E90000,%3C=80000%22%7D%7D">/head/{“User”:{“id|{}”:”&gt;90000,&lt;=80000”}}</a>.</p>
+<p>It’s the same as <code class="code docutils literal notranslate"><span class="pre">&quot;id{}&quot;:&quot;&gt;90000,&lt;=80000&quot;</span></code>. In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">id&gt;80000</span> <span class="pre">OR</span> <span class="pre">id&lt;=90000</span></code>, meaning that id needs to be <code class="code docutils literal notranslate"><span class="pre">id&gt;90000</span> <span class="pre">|</span> <span class="pre">id&lt;=80000</span></code>.</p>
+<p>③ <a class="reference external" href="http://apijson.cn:8080/head/%7B%22User%22:%7B%22id!%7B%7D%22:%5B82001,38710%5D%7D%7D">/head/{“User”:{“id!{}”:[82001,38710]}}</a>.</p>
+<p>In SQL, it’s <code class="code docutils literal notranslate"><span class="pre">id</span> <span class="pre">NOT</span> <span class="pre">IN(82001,38710)</span></code>, meaning <code class="code docutils literal notranslate"><span class="pre">id</span></code> needs to be <code class="code docutils literal notranslate"><span class="pre">!</span> <span class="pre">(id=82001</span> <span class="pre">|</span> <span class="pre">id=38710)</span></code>.</p>
+</div></blockquote>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="build-in-string-functions">
+<h2>3. Build-in string functions<a class="headerlink" href="#build-in-string-functions" title="Permalink to this headline">¶</a></h2>
+<p>① <code class="code docutils literal notranslate"><span class="pre">&quot;count&quot;:Integer</span></code></p>
+<p>This is used to set the maximum number of the returning resources. The maximum number the system supports is 100. Without this, it’ll return the maximum number of results that meet the condition.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:5,%22User%22:%7B%7D%7D%7D">/get/{“[]”:{“count”:5,”User”:{}}}</a></p>
+<p>This example requests 5 Users’ data.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p>② <code class="code docutils literal notranslate"><span class="pre">&quot;page&quot;:Integer</span></code></p>
+<p>This is to indicate the page number starting with 0. The max number can be 100. It’s usually used with <code class="code docutils literal notranslate"><span class="pre">&quot;count&quot;:Integer</span></code></p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:5,%22page%22:3,%22User%22:%7B%7D%7D%7D">/get/{“[]”:{“count”:5,”page”:3,”User”:{}}}</a></p>
+<p>This example get Users data on page 3 with the total number of 5.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p>③ <code class="code docutils literal notranslate"><span class="pre">&quot;query&quot;:Integer</span></code></p>
+<p>When the <code class="code docutils literal notranslate"><span class="pre">Integer</span></code> is 0, it means get the resource. When it’s 1, it means counting the number and returning the number.When it’s 2, it means returning both.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22query%22:2,%22count%22:5,%22User%22:%7B%7D%7D,%22total&#64;%22:%22%252F%5B%5D%252Ftotal%22%7D">/get/{“[]”:{“query”:2, User:{}}, “total&#64;”:”/[]/total”}</a></p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p>④:code:<cite>”join”:”&amp;/Table0/key0&#64;,&lt;/Table1/key1&#64;”</cite></p>
+<p>The joining table functions are represented by symbols:</p>
+<p>“&lt;” - LEFT JOIN</p>
+<p>“&gt;” - RIGHT JOIN</p>
+<p>“&amp;” - INNER JOIN</p>
+<p>“|” - FULL JOIN</p>
+<p>“!” - OUTTER JOIN</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:5,%22join%22:%22&amp;%252FUser%252Fid&#64;,%3C%252FComment%252FmomentId&#64;%22,%22Moment%22:%7B%22&#64;column%22:%22id,userId,content%22%7D,%22User%22:%7B%22name%253F%22:%22t%22,%22id&#64;%22:%22%252FMoment%252FuserId%22,%22&#64;column%22:%22id,name,head%22%7D,%22Comment%22:%7B%22momentId&#64;%22:%22%252FMoment%252Fid%22,%22&#64;column%22:%22id,momentId,content%22%7D%7D%7D">/get/{“[]”:{“join”: “&amp;/User/id&#64;,&lt;/Comment/momentId&#64;”, “Moment”:{}, “User”:{“name?”:”t”, “id&#64;”: “/Moment/userId”}, “Comment”:{“momentId&#64;”: “/Moment/id”}}}</a></p>
+</div></blockquote>
+<p>This examples is equal to SQL expression <code class="code docutils literal notranslate"><span class="pre">Moment</span> <span class="pre">INNER</span> <span class="pre">JOIN</span> <span class="pre">User</span> <span class="pre">LEFT</span> <span class="pre">JOIN</span> <span class="pre">Comment</span></code>.</p>
 </div></blockquote>
 </div>
 </div>

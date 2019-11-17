@@ -342,8 +342,8 @@ The *base_URL* is the root address of the website. Everything that follows it is
     7. Each object in the request body is related to an  individually-addressable resource which has an unique path.
 
 
-2. Endpoint Format
-------------------
+2. Endpoints Format
+--------------------
 
 **Get data in an array:** :code:`/get/{"key[]":{"tableName":{}}}`
 
@@ -452,7 +452,7 @@ Use forward slash to show the path. The part before the colon is the key that wa
 
 ------------------
 
-**Subquery**
+**Subquery expression**
 
 .. code-block:: json
 
@@ -525,58 +525,121 @@ This changes name to alias in returning results. It’s applicable to column, ta
 .. toggle-header::
     :header: Example
 
-       `"@column":"toId:parentId" <http://apijson.cn:8080/get/%7B%22Comment%22:%7B%22@column%22:%22id,toId:parentId%22,%22id%22:51%7D%7D>`_
+       `/get/{"Comment":{"@column":"id,toId:parentId","id":51}} <http://apijson.cn:8080/get/%7B%22Comment%22:%7B%22@column%22:%22id,toId:parentId%22,%22id%22:51%7D%7D>`_
 
        In SQL, it's :code:`toId AS parentId`. It'll return *parentID* instead of *toID*.
 
 ----------------
 
-**Add / expand an item** :code:`"key+":Object`
+**Add / expand an item** :code:`"key+":number/string/array...`
 
-The type of Object is decided by key. Types can be **Number**, **String**, **JSONArray**. Forms are 82001,"apijson",["url0","url1"] respectively. It’s only applicable to **PUT** request.
+The type of value on the right of the colon is decided by key. Types can be **Number** (such as 82001), **String** (such as "url0"), **JSONArray** (such as ["url0","url1"]). The method can only be **PUT**.
 
 .. toggle-header::
     :header: Example
 
        :code: `"praiseUserIdList+":[82001]`
 
-       In SQL, it's json_insert(praiseUserIdList,82001). Add an id that praised the post.
-
+       In this example, add id 82001 to the praiser's list. In SQL, it should be :code:`json_insert(praiseUserIdList,82001)`.
 ----------------
 
-**Delete / decrease an item** :code:`“Key-”:object`
+**Delete / decrease an item** :code:`“Key-”:number/string/array...`
 
-It’s the contrary of “key+”.
+It has the contrary function of :code:`“key+”`.
 
 .. toggle-header::
     :header: Example
 
        :code:`"balance-":100.00`
 
-       In SQL, it's :code:`balance = balance - 100.00`, meaning there's 100 less in balance.
+       This example subtract 100 in the balance. In SQL, it would be :code:`balance = balance - 100.00`.
 
 -----------------
 
-**Operations** :code:`&,|,!`
+**Logical Operators** :code:`&,|,!`
 
-They're used in logic operations. It’s the same as **AND**, **OR**, **NOT** in SQL respectively.
+:code:`&,|,!` refer to **AND**, **OR**, **NOT** in SQL respectively. The basic form to use them are: :code:`"key&{}":"conditions"`, :code:`"key|{}":"conditions"`, :code:`"key!{}":Object`.
 
-By default, for the same key, it’s ‘|’ (OR)operation among conditions; for different keys, the default operation among conditions is ‘&’(AND).
+By default, conditions of the same key are connected with :code:`|` operator. As for different :code:`"key":"conditons"`pairs, the default operator among them is :code:`&`.
 
 .. toggle-header::
     :header: Example
 
-        ① `"id&{}":">80000,<=90000" <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id&%7B%7D%22:%22%3E80000,%3C=90000%22%7D%7D>`_
+        ① `/head/{"User":{"id&{}":">80000,<=90000"}} <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id&%7B%7D%22:%22%3E80000,%3C=90000%22%7D%7D>`_
 
         In SQL, it's :code:`id>80000 AND id<=90000`, meaning id needs to be :code:`id>80000 & id<=90000`
 
-        ② `"id|{}":">90000,<=80000" <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id%7C%7B%7D%22:%22%3E90000,%3C=80000%22%7D%7D>`_.
+        ② `/head/{"User":{"id|{}":">90000,<=80000"}} <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id%7C%7B%7D%22:%22%3E90000,%3C=80000%22%7D%7D>`_.
 
-        It's the same as :code:`"id{}":">90000,<=80000"`. In SQL, it'sid>80000 OR id<=90000, meaning that id needs to be id>90000 | id<=80000
+        It's the same as :code:`"id{}":">90000,<=80000"`. In SQL, it's :code:`id>80000 OR id<=90000`, meaning that id needs to be :code:`id>90000 | id<=80000`.
 
-        ③ `"id!{}":[82001,38710] <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id!%7B%7D%22:%5B82001,38710%5D%7D%7D>`_.
+        ③ `/head/{"User":{"id!{}":[82001,38710]}} <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id!%7B%7D%22:%5B82001,38710%5D%7D%7D>`_.
 
-        In SQL, it's :code:`id NOT IN(82001,38710)`, meaning id needs to be :code:`! (id=82001 | id=38710)`.
+        In SQL, it's :code:`id NOT IN(82001,38710)`, meaning :code:`id` needs to be :code:`! (id=82001 | id=38710)`.
+
+-----------------
+
+3. Build-in string functions
+----------------------------
+
+① :code:`"count":Integer`
+
+This is used to set the maximum number of the returning resources. The maximum number the system supports is 100. Without this, it'll return the maximum number of results that meet the condition.
+
+.. toggle-header::
+    :header: Example
+
+        `/get/{"[]":{"count":5,"User":{}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:5,%22User%22:%7B%7D%7D%7D>`_
+
+        This example requests 5 Users' data.
+
+-----------------
+
+② :code:`"page":Integer`
+
+This is to indicate the page number starting with 0. The max number can be 100. It's usually used with :code:`"count":Integer`
+
+.. toggle-header::
+    :header: Example
+
+        `/get/{"[]":{"count":5,"page":3,"User":{}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:5,%22page%22:3,%22User%22:%7B%7D%7D%7D>`_
+
+        This example get Users data on page 3 with the total number of 5.
+
+-----------------
+
+③ :code:`"query":Integer`
+
+When the :code:`Integer` is 0, it means get the resource. When it's 1, it means counting the number and returning the number.When it's 2, it means returning both.
+
+.. toggle-header::
+    :header: Example
+
+        `/get/{"[]":{"query":2, User:{}}, "total@":"/[]/total"} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22query%22:2,%22count%22:5,%22User%22:%7B%7D%7D,%22total@%22:%22%252F%5B%5D%252Ftotal%22%7D>`_
+
+-----------------
+
+④:code:`"join":"&/Table0/key0@,</Table1/key1@"`
+
+The joining table functions are represented by symbols:
+
+"<" - LEFT JOIN
+
+">" - RIGHT JOIN
+
+"&" - INNER JOIN
+
+"|" - FULL JOIN
+
+"!" - OUTTER JOIN
+
+.. toggle-header::
+    :header: Example
+
+        `/get/{"[]":{"join": "&/User/id@,</Comment/momentId@", "Moment":{}, "User":{"name?":"t", "id@": "/Moment/userId"}, "Comment":{"momentId@": "/Moment/id"}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:5,%22join%22:%22&%252FUser%252Fid@,%3C%252FComment%252FmomentId@%22,%22Moment%22:%7B%22@column%22:%22id,userId,content%22%7D,%22User%22:%7B%22name%253F%22:%22t%22,%22id@%22:%22%252FMoment%252FuserId%22,%22@column%22:%22id,name,head%22%7D,%22Comment%22:%7B%22momentId@%22:%22%252FMoment%252Fid%22,%22@column%22:%22id,momentId,content%22%7D%7D%7D>`_
+
+      This examples is equal to SQL expression :code:`Moment INNER JOIN User LEFT JOIN Comment`.
+
 
 
 
