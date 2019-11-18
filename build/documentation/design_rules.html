@@ -93,7 +93,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API design style guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#methods-and-http-mapping">1. Methods and HTTP Mapping</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#endpoints-format">2. Endpoints Format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#build-in-string-functions">3. Build-in string functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-in-string-functions-part-one">3. Build-in string functions part one</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-in-string-functions-part-two">4. Build-in string functions part two</a></li>
 </ul>
 </li>
 </ul>
@@ -699,8 +700,8 @@
 </div>
 </div>
 <hr class="docutils" />
-<div class="section" id="build-in-string-functions">
-<h2>3. Build-in string functions<a class="headerlink" href="#build-in-string-functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="build-in-string-functions-part-one">
+<h2>3. Build-in string functions part one<a class="headerlink" href="#build-in-string-functions-part-one" title="Permalink to this headline">¶</a></h2>
 <p>① <code class="code docutils literal notranslate"><span class="pre">&quot;count&quot;:Integer</span></code></p>
 <p>This is used to set the maximum number of the returning resources. The maximum number the system supports is 100. Without this, it’ll return the maximum number of results that meet the condition.</p>
 <div class="toggle-header docutils container">
@@ -736,7 +737,7 @@
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p>④:code:<cite>”join”:”&amp;/Table0/key0&#64;,&lt;/Table1/key1&#64;”</cite></p>
+<p>④ <code class="code docutils literal notranslate"><span class="pre">&quot;join&quot;:&quot;&amp;/Table0/key0&#64;,&lt;/Table1/key1&#64;&quot;</span></code></p>
 <p>The joining table functions are represented by symbols:</p>
 <p>“&lt;” - LEFT JOIN</p>
 <p>“&gt;” - RIGHT JOIN</p>
@@ -752,6 +753,70 @@
 <div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:5,%22join%22:%22&amp;%252FUser%252Fid&#64;,%3C%252FComment%252FmomentId&#64;%22,%22Moment%22:%7B%22&#64;column%22:%22id,userId,content%22%7D,%22User%22:%7B%22name%253F%22:%22t%22,%22id&#64;%22:%22%252FMoment%252FuserId%22,%22&#64;column%22:%22id,name,head%22%7D,%22Comment%22:%7B%22momentId&#64;%22:%22%252FMoment%252Fid%22,%22&#64;column%22:%22id,momentId,content%22%7D%7D%7D">/get/{“[]”:{“join”: “&amp;/User/id&#64;,&lt;/Comment/momentId&#64;”, “Moment”:{}, “User”:{“name?”:”t”, “id&#64;”: “/Moment/userId”}, “Comment”:{“momentId&#64;”: “/Moment/id”}}}</a></p>
 </div></blockquote>
 <p>This examples is equal to SQL expression <code class="code docutils literal notranslate"><span class="pre">Moment</span> <span class="pre">INNER</span> <span class="pre">JOIN</span> <span class="pre">User</span> <span class="pre">LEFT</span> <span class="pre">JOIN</span> <span class="pre">Comment</span></code>.</p>
+</div></blockquote>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="build-in-string-functions-part-two">
+<h2>4. Build-in string functions part two<a class="headerlink" href="#build-in-string-functions-part-two" title="Permalink to this headline">¶</a></h2>
+<p>① <code class="code docutils literal notranslate"><span class="pre">&quot;&#64;combine&quot;:&quot;&amp;key0,&amp;key1,|key2,key3,!key4,!key5,&amp;key6,key7...&quot;</span></code></p>
+<p>This function combines conditions that have been listed to request data. It’ll group conditions according to their types. It uses logical operators(&amp;,|,!) to connect among groups while within a group, it’ll follow the order that conditions have been listed. So, it’ll become :code:<a href="#id7"><span class="problematic" id="id8">`</span></a>(key0 &amp; key1 &amp; key6 &amp; other keys) &amp; (key2 | key3 | key7) &amp; !(key4 | key5) `</p>
+<p>The:code:<cite>other keys</cite> means keys that aren’t included in <code class="code docutils literal notranslate"><span class="pre">combine</span></code> function. By default, it’s connected by AND.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:10,%22User%22:%7B%22&#64;column%22:%22id,name,tag%22,%22name~%22:%22a%22,%22tag~%22:%22a%22,%22&#64;combine%22:%22name~,tag~%22%7D%7D%7D">/get/{“User[]”:{“count”:10,”User”:{“&#64;column”:”id,name,tag”,”name~”:”a”,”tag~”:”a”,”&#64;combine”:”name~,tag~”}}}</a></p>
+<p>This example request User objects whose <code class="code docutils literal notranslate"><span class="pre">name</span></code> or <code class="code docutils literal notranslate"><span class="pre">tag</span></code> includes “a”.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p>② <code class="code docutils literal notranslate"><span class="pre">&quot;&#64;column&quot;:&quot;column;function(arg)...&quot;</span></code></p>
+<p>This function defines which colunms will be returned.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%22:%7B%22&#64;column%22:%22id,sex,name%22,%22id%22:38710%7D%7D">/get/{“User”:{“&#64;column”:”id,sex,name”,”id”:38710}}</a></p>
+<p>This request only returns colunms: id, sex, name. The returning follows the same order.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p>③ <code class="code docutils literal notranslate"><span class="pre">&quot;&#64;order&quot;:&quot;column0+,column1-...&quot;</span></code></p>
+<p>This function can set descendent or ascendent order of returning data within a column.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:10,%22User%22:%7B%22&#64;column%22:%22name,id%22,%22&#64;order%22:%22name-,id%22%7D%7D%7D">/get/{“[]”:{“count”:10,”User”:{“&#64;column”:”name,id”,”&#64;order”:”name-,id”}}}</a></p>
+<p>This example requests data following descendent order in name column while the default order in id column.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p>④ <code class="code docutils literal notranslate"><span class="pre">&quot;&#64;group&quot;:&quot;column0,column1...&quot;</span></code></p>
+<p>This function groups data with columns. If the table’s <code class="code docutils literal notranslate"><span class="pre">id</span></code> has been declared in <code class="code docutils literal notranslate"><span class="pre">&#64;column</span></code>, then the <code class="code docutils literal notranslate"><span class="pre">id</span></code> needs to be included in <code class="code docutils literal notranslate"><span class="pre">&#64;group</span></code>.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:10,%22Moment%22:%7B%22&#64;column%22:%22userId,id%22,%22&#64;group%22:%22userId,id%22%7D%7D%7D">/get/{“[]”:{“count”:10,”Moment”:{“&#64;column”:”userId,id”,”&#64;group”:”userId,id”}}}</a></p>
+<p>This example returns <code class="code docutils literal notranslate"><span class="pre">id</span></code> grouped by userId.</p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<p>⑤ <code class="code docutils literal notranslate"><span class="pre">&quot;&#64;having&quot;:&quot;function0(...)?value0;function1(...)?value1;function2(...)?value2...&quot;</span></code></p>
+<p>This function is as same as the <strong>HAVING</strong> function in AQL. Normally, it’s used with <code class="code docutils literal notranslate"><span class="pre">&#64;group</span></code>.</p>
+<div class="toggle-header docutils container">
+<p>Example</p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:10,%22Moment%22:%7B%22&#64;column%22:%22userId%253Bmax(id)%22,%22&#64;group%22:%22userId%22,%22&#64;having%22:%22max(id)%3E=100%22%7D%7D%7D">/get/{“[]”:{“Moment”:{“&#64;column”:”userId;max(id)”,”&#64;group”:”userId”,”&#64;having”:”max(id)&gt;=100”}}}</a></p>
+<p>This example get an array of Moment with userID and id where id &gt;=100, grouped by userId.</p>
 </div></blockquote>
 </div>
 </div>

@@ -579,8 +579,8 @@ By default, conditions of the same key are connected with :code:`|` operator. As
 
 -----------------
 
-3. Build-in string functions
-----------------------------
+3. Build-in string functions part one
+-------------------------------------
 
 ① :code:`"count":Integer`
 
@@ -619,7 +619,7 @@ When the :code:`Integer` is 0, it means get the resource. When it's 1, it means 
 
 -----------------
 
-④:code:`"join":"&/Table0/key0@,</Table1/key1@"`
+④ :code:`"join":"&/Table0/key0@,</Table1/key1@"`
 
 The joining table functions are represented by symbols:
 
@@ -639,6 +639,87 @@ The joining table functions are represented by symbols:
         `/get/{"[]":{"join": "&/User/id@,</Comment/momentId@", "Moment":{}, "User":{"name?":"t", "id@": "/Moment/userId"}, "Comment":{"momentId@": "/Moment/id"}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:5,%22join%22:%22&%252FUser%252Fid@,%3C%252FComment%252FmomentId@%22,%22Moment%22:%7B%22@column%22:%22id,userId,content%22%7D,%22User%22:%7B%22name%253F%22:%22t%22,%22id@%22:%22%252FMoment%252FuserId%22,%22@column%22:%22id,name,head%22%7D,%22Comment%22:%7B%22momentId@%22:%22%252FMoment%252Fid%22,%22@column%22:%22id,momentId,content%22%7D%7D%7D>`_
 
       This examples is equal to SQL expression :code:`Moment INNER JOIN User LEFT JOIN Comment`.
+-------------------
+
+4. Build-in string functions part two
+-------------------------------------
+
+① :code:`"@combine":"&key0,&key1,|key2,key3,!key4,!key5,&key6,key7..."`
+
+This function combines conditions that have been listed to request data. It'll group conditions according to their types. It uses logical operators(&,|,!) to connect among groups while within a group, it'll follow the order that conditions have been listed. So, it'll become :code:`(key0 & key1 & key6 & other keys) & (key2 | key3 | key7) & !(key4 | key5) `
+
+The:code:`other keys` means keys that aren't included in :code:`combine` function. By default, it's connected by AND.
+
+.. toggle-header::
+    :header: Example
+
+        `/get/{"User[]":{"count":10,"User":{"@column":"id,name,tag","name~":"a","tag~":"a","@combine":"name~,tag~"}}} <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:10,%22User%22:%7B%22@column%22:%22id,name,tag%22,%22name~%22:%22a%22,%22tag~%22:%22a%22,%22@combine%22:%22name~,tag~%22%7D%7D%7D>`_
+
+        This example request User objects whose :code:`name` or :code:`tag` includes "a".
+
+-------------------
+
+② :code:`"@column":"column;function(arg)..."`
+
+This function defines which colunms will be returned.
+
+.. toggle-header::
+    :header: Example
+
+       `/get/{"User":{"@column":"id,sex,name","id":38710}} <http://apijson.cn:8080/get/%7B%22User%22:%7B%22@column%22:%22id,sex,name%22,%22id%22:38710%7D%7D>`_
+
+       This request only returns colunms: id, sex, name. The returning follows the same order.
+
+--------------------
+
+③ :code:`"@order":"column0+,column1-..."`
+
+This function can set descendent or ascendent order of returning data within a column.
+
+.. toggle-header::
+    :header: Example
+
+        `/get/{"[]":{"count":10,"User":{"@column":"name,id","@order":"name-,id"}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:10,%22User%22:%7B%22@column%22:%22name,id%22,%22@order%22:%22name-,id%22%7D%7D%7D>`_
+
+        This example requests data following descendent order in name column while the default order in id column.
+
+---------------------
+
+④ :code:`"@group":"column0,column1..."`
+
+This function groups data with columns. If the table's :code:`id` has been declared in :code:`@column`, then the :code:`id` needs to be included in :code:`@group`.
+
+.. toggle-header::
+    :header: Example
+
+        `/get/{"[]":{"count":10,"Moment":{"@column":"userId,id","@group":"userId,id"}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:10,%22Moment%22:%7B%22@column%22:%22userId,id%22,%22@group%22:%22userId,id%22%7D%7D%7D>`_
+
+        This example returns :code:`id` grouped by userId.
+
+---------------------
+
+⑤ :code:`"@having":"function0(...)?value0;function1(...)?value1;function2(...)?value2..."`
+
+This function is as same as the **HAVING** function in AQL. Normally, it's used with :code:`@group`.
+
+.. toggle-header::
+    :header: Example
+
+        `/get/{"[]":{"Moment":{"@column":"userId;max(id)","@group":"userId","@having":"max(id)>=100"}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:10,%22Moment%22:%7B%22@column%22:%22userId%253Bmax(id)%22,%22@group%22:%22userId%22,%22@having%22:%22max(id)%3E=100%22%7D%7D%7D>`_
+
+        This example get an array of Moment with userID and id where id >=100, grouped by userId.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
