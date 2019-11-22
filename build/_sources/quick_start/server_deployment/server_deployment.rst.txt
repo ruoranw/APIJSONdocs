@@ -1,20 +1,22 @@
 Server-side Development
 ========================
 
-You can either use Eclipse for JavaEE or IntelllJ IDEA Ultimate to make installation. For both, first download the project and save it in a directory.
+This chapter shows how to make installation with Eclipse for JavaEE or IntelllJ IDEA Ultimate. For both, first download the project, unzip it and save it in a directory. you can also clone the project from github:
+
+:code:`git clone https://github.com/TommyLemon/APIJSON.git`
 
 1. Installing with Eclipse
 ---------------------------
 
 **Prerequisites**
 
-* Java Development Kit(JDK): 1.8+
+* Java Development Kit(JDK): version 1.8 or above.
 
-* `MAVEN <https://maven.apache.org/download.cgi>`_: 3.0
+* `MAVEN <https://maven.apache.org/download.cgi>`_: version 3.0 or above
 
 * Mysql / Oracle
 
-* `Eclipse Java EE IDE <https://www.eclipse.org/downloads/>`_ for Web Developers.Version: Mars.1 Release (4.5.1)
+* `Eclipse Java EE IDE <https://www.eclipse.org/downloads/>`_ for Web Developers with version: Mars.1 Release (4.5.1)
 
 **Opening the project with Eclipse**
 
@@ -22,11 +24,16 @@ You can either use Eclipse for JavaEE or IntelllJ IDEA Ultimate to make installa
 
 **Preparing the library used in demo**
 
-In the menu at the right, click **libs**, then right click **apijson-orm.jar**, click **add as library**. Apply the same to the rest .jar files in libs.
+In the menu at the right, click **libs**, then right click **apijson-orm.jar**, click **add as library**. Apply the same to the rest of .jar files in libs folder.
 
-**Configuration**
+**Add your own database**
 
-Open apijson.demo.server.DemoSQLConfig. In line 40-61, change return values of `getDBUri`,`getDBAccount`,`getDBPassword`,`getSchema` to your own database.
+If you want to add your own database, open src-main-java-apijson-demo-server-model-DemoSQLConfig.java. In line 40-61, change return values of :code:`getDBUri`, :code:`getDBAccount`, :code:`getDBPassword`, :code:`getSchema` to your own database.
+
+.. image:: images/changedatabase.png
+   :width: 300
+
+This is the file that you need to make change.
 
 .. code-block:: java
 
@@ -51,11 +58,15 @@ Open apijson.demo.server.DemoSQLConfig. In line 40-61, change return values of `
         return StringUtil.isEmpty(s, true) ? "thea" : s; //TODO: Change the return value to your own. For here,change "thea" to "your database's name"
     }
 
-**Note**: Instead of this step, you can also import your database.
-
 **Running the application**
 
 In Eclipse, in the menu on the top, click **Run > Run As > Java Application >choose APIJSONApplication > OK**
+
+.. image:: images/complete.gif
+   :width: 600
+
+Then copy and paste link `http://localhost:8080/get/{}` to your browser to see if it returns the succesful message.
+
 
 2. Importing database
 ----------------------
@@ -72,7 +83,7 @@ My configuration:
 
 Select **MySQLWorkbench > Enter a connection > Click Server menu > Data Import > Select the path of your .sql file > Start Import > Refresh SCHEMAS**. Now you should see tables are added successfully.
 
-You can also import demo sql tables in *APIJSON-Master/MySQL* to test the app.
+You can also import demo sql tables in *MySQL* folder to test the app.
 
 .. image:: https://vincentcheng.github.io/apijson-doc/assets/img/use1.708387e0.png
 
@@ -100,11 +111,11 @@ In **Use classpath of module** , choose **apijson-demo**.
 
 Click **Run** in the bottom.
 
-**Note**: After running, you should see APIJSON test logs and finally, it would show ‘APIJSON已启动’ (APIJSON has launched). If it shows error message‘address already in use’, that means port 8080 has been used. You need to change the port. See `how to change ports for a Spring Boot Application <https://stackoverflow.com/questions/21083170/how-to-configure-port-for-a-spring-boot-application>`_
+**Note**: After running, you should see test logs and finally, it would show ‘APIJSON已启动’ (APIJSON has launched). If it shows error message‘The address is already in use’, that means port 8080 has been used. You need to change the port. See `how to change ports for a Spring Boot Application <https://stackoverflow.com/questions/21083170/how-to-configure-port-for-a-spring-boot-application>`_
 
 Then copy and paste link `http://localhost:8080/get/{}` to your browser.
 
-If it returns with:
+If it's successful it returns with:
 
 .. code-block:: json
 
@@ -112,4 +123,5 @@ If it returns with:
       "code": 200,
       "msg": "success"
     }
+
 

@@ -168,24 +168,27 @@
             
   <div class="section" id="server-side-development">
 <h1>Server-side Development<a class="headerlink" href="#server-side-development" title="Permalink to this headline">¶</a></h1>
-<p>You can either use Eclipse for JavaEE or IntelllJ IDEA Ultimate to make installation. For both, first download the project and save it in a directory.</p>
+<p>This chapter shows how to make installation with Eclipse for JavaEE or IntelllJ IDEA Ultimate. For both, first download the project, unzip it and save it in a directory. you can also clone the project from github:</p>
+<p><code class="code docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/TommyLemon/APIJSON.git</span></code></p>
 <div class="section" id="installing-with-eclipse">
 <h2>1. Installing with Eclipse<a class="headerlink" href="#installing-with-eclipse" title="Permalink to this headline">¶</a></h2>
 <p><strong>Prerequisites</strong></p>
 <ul class="simple">
-<li><p>Java Development Kit(JDK): 1.8+</p></li>
-<li><p><a class="reference external" href="https://maven.apache.org/download.cgi">MAVEN</a>: 3.0</p></li>
+<li><p>Java Development Kit(JDK): version 1.8 or above.</p></li>
+<li><p><a class="reference external" href="https://maven.apache.org/download.cgi">MAVEN</a>: version 3.0 or above</p></li>
 <li><p>Mysql / Oracle</p></li>
-<li><p><a class="reference external" href="https://www.eclipse.org/downloads/">Eclipse Java EE IDE</a> for Web Developers.Version: Mars.1 Release (4.5.1)</p></li>
+<li><p><a class="reference external" href="https://www.eclipse.org/downloads/">Eclipse Java EE IDE</a> for Web Developers with version: Mars.1 Release (4.5.1)</p></li>
 </ul>
 <p><strong>Opening the project with Eclipse</strong></p>
 <blockquote>
 <div><p>Open Eclipse, then select <strong>File &gt; Import &gt; Maven &gt; Existing Maven Projects &gt; Next &gt; Browse &gt; Select the path of the project &gt; APIJSON-Java-Server &gt; APIJSONBoot &gt; check pom.xml…apijson-demo &gt; Finish</strong></p>
 </div></blockquote>
 <p><strong>Preparing the library used in demo</strong></p>
-<p>In the menu at the right, click <strong>libs</strong>, then right click <strong>apijson-orm.jar</strong>, click <strong>add as library</strong>. Apply the same to the rest .jar files in libs.</p>
-<p><strong>Configuration</strong></p>
-<p>Open apijson.demo.server.DemoSQLConfig. In line 40-61, change return values of <cite>getDBUri</cite>,`getDBAccount`,`getDBPassword`,`getSchema` to your own database.</p>
+<p>In the menu at the right, click <strong>libs</strong>, then right click <strong>apijson-orm.jar</strong>, click <strong>add as library</strong>. Apply the same to the rest of .jar files in libs folder.</p>
+<p><strong>Add your own database</strong></p>
+<p>If you want to add your own database, open src-main-java-apijson-demo-server-model-DemoSQLConfig.java. In line 40-61, change return values of <code class="code docutils literal notranslate"><span class="pre">getDBUri</span></code>, <code class="code docutils literal notranslate"><span class="pre">getDBAccount</span></code>, <code class="code docutils literal notranslate"><span class="pre">getDBPassword</span></code>, <code class="code docutils literal notranslate"><span class="pre">getSchema</span></code> to your own database.</p>
+<a class="reference internal image-reference" href="../../_images/changedatabase.png"><img alt="../../_images/changedatabase.png" src="../../_images/changedatabase.png" style="width: 300px;" /></a>
+<p>This is the file that you need to make change.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getDBUri</span><span class="o">()</span> <span class="o">{</span>
        <span class="c1">//TODO: Change the return value to your own</span>
@@ -208,9 +211,10 @@
    <span class="o">}</span>
 </pre></div>
 </div>
-<p><strong>Note</strong>: Instead of this step, you can also import your database.</p>
 <p><strong>Running the application</strong></p>
 <p>In Eclipse, in the menu on the top, click <strong>Run &gt; Run As &gt; Java Application &gt;choose APIJSONApplication &gt; OK</strong></p>
+<a class="reference internal image-reference" href="../../_images/complete.gif"><img alt="../../_images/complete.gif" src="../../_images/complete.gif" style="width: 600px;" /></a>
+<p>Then copy and paste link <cite>http://localhost:8080/get/{}</cite> to your browser to see if it returns the succesful message.</p>
 </div>
 <div class="section" id="importing-database">
 <h2>2. Importing database<a class="headerlink" href="#importing-database" title="Permalink to this headline">¶</a></h2>
@@ -222,7 +226,7 @@
 <li><p>Systems and softwares are all 64 bit.</p></li>
 </ul>
 <p>Select <strong>MySQLWorkbench &gt; Enter a connection &gt; Click Server menu &gt; Data Import &gt; Select the path of your .sql file &gt; Start Import &gt; Refresh SCHEMAS</strong>. Now you should see tables are added successfully.</p>
-<p>You can also import demo sql tables in <em>APIJSON-Master/MySQL</em> to test the app.</p>
+<p>You can also import demo sql tables in <em>MySQL</em> folder to test the app.</p>
 <img alt="https://vincentcheng.github.io/apijson-doc/assets/img/use1.708387e0.png" src="https://vincentcheng.github.io/apijson-doc/assets/img/use1.708387e0.png" />
 </div>
 <div class="section" id="installing-with-intellij-idea-ultimate">
@@ -241,9 +245,9 @@
 <p>In <strong>Main class</strong>, choose <strong>APIJSON Application</strong>.</p>
 <p>In <strong>Use classpath of module</strong> , choose <strong>apijson-demo</strong>.</p>
 <p>Click <strong>Run</strong> in the bottom.</p>
-<p><strong>Note</strong>: After running, you should see APIJSON test logs and finally, it would show ‘APIJSON已启动’ (APIJSON has launched). If it shows error message‘address already in use’, that means port 8080 has been used. You need to change the port. See <a class="reference external" href="https://stackoverflow.com/questions/21083170/how-to-configure-port-for-a-spring-boot-application">how to change ports for a Spring Boot Application</a></p>
+<p><strong>Note</strong>: After running, you should see test logs and finally, it would show ‘APIJSON已启动’ (APIJSON has launched). If it shows error message‘The address is already in use’, that means port 8080 has been used. You need to change the port. See <a class="reference external" href="https://stackoverflow.com/questions/21083170/how-to-configure-port-for-a-spring-boot-application">how to change ports for a Spring Boot Application</a></p>
 <p>Then copy and paste link <cite>http://localhost:8080/get/{}</cite> to your browser.</p>
-<p>If it returns with:</p>
+<p>If it’s successful it returns with:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;code&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
   <span class="nt">&quot;msg&quot;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span>
