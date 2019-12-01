@@ -28,6 +28,7 @@ About APIJSON
    :caption: Documentation
 
    documentation/design_rules
+   documentation/why
 
 Indices and tables
 ==================
