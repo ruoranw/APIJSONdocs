@@ -713,17 +713,3 @@ This function is as same as the **HAVING** function in AQL. Normally, it's used 
 
 ⑥ :code:`"@schema":"sys"`
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-

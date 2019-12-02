@@ -26,7 +26,3 @@ Others that are used to verify requests include:
 To see a full list of key words that used to set constraints on requests or verify requests, `click here <https://github.com/APIJSON/APIJSON/blob/master/APIJSON-Java-Server/APIJSONORM/src/main/java/zuo/biao/apijson/server/Operation.java>`_.
 
 
-
-
-
-

@@ -24,11 +24,12 @@ About APIJSON
    quick_start/client_deployment/client_deployment
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Documentation
 
    documentation/design_rules
    documentation/why
+   documentation/what_achieved
 
 Indices and tables
 ==================
