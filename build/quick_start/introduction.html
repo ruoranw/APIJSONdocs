@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>How does APIJSON works? &mdash; APIJSON Doc 1.0.0 documentation</title>
+  <title>About APIJSON &mdash; APIJSON Doc 1.0.0 documentation</title>
   
 
   
@@ -38,8 +38,8 @@
   <link rel="stylesheet" href="../_static/contentui.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="What APIJSON has achieved?" href="what_achieved.html" />
-    <link rel="prev" title="API design style guide" href="design_rules.html" /> 
+    <link rel="next" title="Features" href="features.html" />
+    <link rel="prev" title="APIJSON Documentation" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,16 +84,17 @@
             
             
               <p class="caption"><span class="caption-text">Quick Start</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction/introduction.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quick_start/server_deployment/server_deployment.html">Server-side Development</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quick_start/client_deployment/client_deployment.html">Client-side Development</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About APIJSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server_deployment/server_deployment.html">Server-side Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_deployment/client_deployment.html">Client-side Development</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Documentation</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="design_rules.html">API design style guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">How does APIJSON works?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="what_achieved.html">What APIJSON has achieved?</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation/design_rules.html">API design style guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation/why.html">How does APIJSON works?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation/what_achieved.html">What APIJSON has achieved?</a></li>
 </ul>
 
             
@@ -139,13 +140,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>How does APIJSON works?</li>
+      <li>About APIJSON</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/documentation/why.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/quick_start/introduction.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -158,26 +159,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="how-does-apijson-works">
-<h1>How does APIJSON works?<a class="headerlink" href="#how-does-apijson-works" title="Permalink to this headline">¶</a></h1>
-<p>APIJSON-Server will turn JSON formatted requests to SQL statements. Then as the database has been connected, those SQL statements will be executed. The server will return specified resources in JSON. During the whole process, APIJSON automatically verify the user’s role and authorization, which will prevent malicious SQL injection.</p>
-<p>Besides, developers can verify the request body by adding code in database. For instance, to verify if the value of <code class="code docutils literal notranslate"><span class="pre">type{}</span></code> would be one of <code class="code docutils literal notranslate"><span class="pre">[0,1,2]</span></code>, you just need to add the following in the database:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>&quot;VERIFY&quot;:{
-  &quot;type{}&quot;:[0,1,2]
-}
-</pre></div>
-</div>
-<p>Others that are used to verify requests include:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>&quot;VERIFY&quot;: { &quot;money&amp;{}&quot;:&quot;&gt;0,&lt;=10000&quot; }              //Verify if money&gt;0 &amp; money&lt;=10000.
-&quot;TYPE&quot;: { &quot;balance&quot;: &quot;Double&quot; }                    //Verify if the &quot;TYPE&quot; of the &quot;balance&quot; is &quot;Double&quot;.
-&quot;UNIQUE&quot;: &quot;phone&quot;                                  //The value of &quot;phone&quot; shouldn&#39;t be the same as any one already in the database.
-&quot;NECESSARY&quot;: &quot;id,name&quot;                             //&quot;id&quot; and &quot;name&quot; are requested.
-&quot;DISALLOW&quot;: &quot;balance&quot;                              //&quot;Balance&quot; is not allowed to be included in the request body.
-&quot;INSERT&quot;: { &quot;@role&quot;: &quot;OWNER&quot; }                     //If &quot;role&quot; is not included, then the default value will be add to the database.
-&quot;UPDATE&quot;: { &quot;id@&quot;: &quot;User/id&quot; }                     //Force to add key-value pairs.
-</pre></div>
-</div>
-<p>To see a full list of key words that used to set constraints on requests or verify requests, <a class="reference external" href="https://github.com/APIJSON/APIJSON/blob/master/APIJSON-Java-Server/APIJSONORM/src/main/java/zuo/biao/apijson/server/Operation.java">click here</a>.</p>
+  <div class="section" id="about-apijson">
+<h1>About APIJSON<a class="headerlink" href="#about-apijson" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><p>APIJSON is a JSON based internet communication protocol exclusively for API design and an ORM library based on this protocal. APIJSON can largely simplifies the process of API development. It helps developers to build an automatic API with functions like CRUD, data search.</p>
+<p>By saving communication time between developers and hours of API development work, it largely reduces costs of API development.</p>
+<p>APIJSON is recommanded to small to medium web applications that have decoupled front and back ends, such as startups projects or company internal use projects.</p>
+<p>APIJSON has been honored by Gitee as the <em>Most Valuable Project</em> in 2019.</p>
+<img alt="https://raw.githubusercontent.com/TommyLemon/StaticResources/master/APIJSON_GVPAwardCertificate-small.jpg" src="https://raw.githubusercontent.com/TommyLemon/StaticResources/master/APIJSON_GVPAwardCertificate-small.jpg" />
+</div></blockquote>
 </div>
 
 
@@ -188,10 +178,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="what_achieved.html" class="btn btn-neutral float-right" title="What APIJSON has achieved?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="features.html" class="btn btn-neutral float-right" title="Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="design_rules.html" class="btn btn-neutral float-left" title="API design style guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="APIJSON Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

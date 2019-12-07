@@ -6,25 +6,18 @@
 APIJSON Documentation
 =====================
 
-About APIJSON
--------------
-
-  APIJSON is a JSON based internet communication protocol and an ORM library that largely simplifies the process of API development. It helps developers to build an automatic and more efficient API.
-
-  APIJSON has been honored by Gitee as the *Most Valuable Project* in 2019.
-
-  .. image:: https://raw.githubusercontent.com/TommyLemon/StaticResources/master/APIJSON_GVPAwardCertificate-small.jpg
-
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Quick Start
 
-   introduction/introduction
+   quick_start/introduction
+   quick_start/features
    quick_start/server_deployment/server_deployment
    quick_start/client_deployment/client_deployment
 
+
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
    :caption: Documentation
 
    documentation/design_rules

@@ -84,7 +84,8 @@
             
               <p class="caption"><span class="caption-text">Quick Start</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction/introduction.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_start/introduction.html">About APIJSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_start/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quick_start/server_deployment/server_deployment.html">Server-side Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quick_start/client_deployment/client_deployment.html">Client-side Development</a></li>
 </ul>
@@ -95,7 +96,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">What APIJSON has achieved?</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#request-methods">Request Methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#request-body">Request body</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#request-body-structures">Request body structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#response-body">Response body</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#build-in-functions">Build-in functions</a></li>
 </ul>
@@ -168,22 +169,24 @@
 <h1>What APIJSON has achieved?<a class="headerlink" href="#what-apijson-has-achieved" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
-<p>Registeration and login</p>
-<p>CRUD and remote procedure call(RPC) of functions</p>
-<p>Setting orders and pages on returned data</p>
-<p>Calculating and grouping data</p>
-<p>Fuzzy matching search</p>
-<p>Regular expressions</p>
-<p>Joining tables, subquery, and other SQL functions</p>
+<p>•Registeration and login</p>
+<p>•CRUD and remote procedure call(RPC) of functions</p>
+<p>•Setting orders and pages on returned data</p>
+<p>•Calculating and grouping data</p>
+<p>•Fuzzy matching search</p>
+<p>•Regular expressions</p>
+<p>•Joining tables, subquery, and other SQL functions</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="request-methods">
 <h2>Request Methods<a class="headerlink" href="#request-methods" title="Permalink to this headline">¶</a></h2>
-<p>GET,HEAD,GETS,HEADS,POST,PUT,DELETE</p>
+<p>The APIJSON supports the following request methods:</p>
+<p><strong>GET,HEAD,GETS,HEADS,POST,PUT,DELETE</strong></p>
+<p>For details of these requests methods, see <a class="reference external" href="https://apijsondocs.readthedocs.io/en/latest/documentation/design_rules.html#methods-and-http-mapping">design rules</a>.</p>
 </div>
 <hr class="docutils" />
-<div class="section" id="request-body">
-<h2>Request body<a class="headerlink" href="#request-body" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="request-body-structures">
+<h2>Request body structures<a class="headerlink" href="#request-body-structures" title="Permalink to this headline">¶</a></h2>
 <p>{ “Table”:{…} }</p>
 <p>{ “Table0”:{…}, “Table1”:{…}, “Table2”:{…} … }</p>
 <p>{ “[]”:{ “Table”:{…} } }</p>

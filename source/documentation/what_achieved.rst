@@ -4,30 +4,35 @@ What APIJSON has achieved?
 Functions
 ----------
 
-Registeration and login
+•Registeration and login
 
-CRUD and remote procedure call(RPC) of functions
+•CRUD and remote procedure call(RPC) of functions
 
-Setting orders and pages on returned data
+•Setting orders and pages on returned data
 
-Calculating and grouping data
+•Calculating and grouping data
 
-Fuzzy matching search
+•Fuzzy matching search
 
-Regular expressions
+•Regular expressions
 
-Joining tables, subquery, and other SQL functions
+•Joining tables, subquery, and other SQL functions
 
 ---------------------
 
 Request Methods
 -----------------
-GET,HEAD,GETS,HEADS,POST,PUT,DELETE
+
+The APIJSON supports the following request methods:
+
+**GET,HEAD,GETS,HEADS,POST,PUT,DELETE**
+
+For details of these requests methods, see `design rules <https://apijsondocs.readthedocs.io/en/latest/documentation/design_rules.html#methods-and-http-mapping>`_.
 
 ---------------------
 
-Request body
---------------
+Request body structures
+-----------------------
 
 { "Table":{...} }
 
