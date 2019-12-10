@@ -4,20 +4,26 @@ Features
 
 **For API developers:**
 
-* APIJSON largely reduces API developers' workload by reducing most API protocal design work and documentation work.
+* APIJSON largely reduces API developers' workload by reducing most API protocals design work and documentation work.
 
-* APIJSON supports automatic permission verification, version management and SQL injection prevention. Developers no longer need to worry about compatibility of APIs and documentation update with legacy apps.
+* APIJSON supports automatic permission verification, version management and SQL injection prevention. The API has no version, so developers no longer need to worry about the update of API protocals or the derivative documentation update.
 
-* With these feature, it saves communication time between front-end and back-end developers about the API design.
+* With these features, it saves communication time between front-end and back-end developers about the API design.
 
-**For API users:**
+**For clients:**
 
-* You can get different types of data or different data forms by making just one request to the server. It's very convenient and flexible, and it saves sending multiple requests with many different API endpoints.
+* You can get many resources and defferent forms of data by making just a single request While typical REST APIs require loading from multiple URLs. Being convenient and flexible, it saves sending multiple requests with multiple API endpoints.
 
-* It provides CRUD(read and write), Fuzzy Search, Remote Function Calls, etc. Other features include saving duplicate data, checking request history, etc.
+* It provides CRUD(read and write), Fuzzy Search, Remote Method Invocation (RMI), etc. Other features include saving duplicate data, checking request history, etc.
 
 Examples
 ---------
+
+APIJSON are organized by json objects not endpoints. The client can access full capabilities of the data from a single endpoint. To send a request, the basic structure is :
+
+**baseURL / Methods(GET,GETS,POST,etc.) / JSONObject query**
+
+The following example shows how to query a user's information.
 
 **Get a user:**
 
@@ -54,6 +60,8 @@ Response
  }
 
 `Try it yourself <http://apijson.cn:8080/get/{"User":{}}>`_
+
+The following example shows the query of getting three users' :code:`id` and :code:`name`.
 
 **Get an array of users**
 

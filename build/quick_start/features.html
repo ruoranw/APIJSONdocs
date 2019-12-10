@@ -166,17 +166,20 @@
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
 <p><strong>For API developers:</strong></p>
 <ul class="simple">
-<li><p>APIJSON largely reduces API developers’ workload by reducing most API protocal design work and documentation work.</p></li>
-<li><p>APIJSON supports automatic permission verification, version management and SQL injection prevention. Developers no longer need to worry about compatibility of APIs and documentation update with legacy apps.</p></li>
-<li><p>With these feature, it saves communication time between front-end and back-end developers about the API design.</p></li>
+<li><p>APIJSON largely reduces API developers’ workload by reducing most API protocals design work and documentation work.</p></li>
+<li><p>APIJSON supports automatic permission verification, version management and SQL injection prevention. The API has no version, so developers no longer need to worry about the update of API protocals or the derivative documentation update.</p></li>
+<li><p>With these features, it saves communication time between front-end and back-end developers about the API design.</p></li>
 </ul>
-<p><strong>For API users:</strong></p>
+<p><strong>For clients:</strong></p>
 <ul class="simple">
-<li><p>You can get different types of data or different data forms by making just one request to the server. It’s very convenient and flexible, and it saves sending multiple requests with many different API endpoints.</p></li>
-<li><p>It provides CRUD(read and write), Fuzzy Search, Remote Function Calls, etc. Other features include saving duplicate data, checking request history, etc.</p></li>
+<li><p>You can get many resources and defferent forms of data by making just a single request While typical REST APIs require loading from multiple URLs. Being convenient and flexible, it saves sending multiple requests with multiple API endpoints.</p></li>
+<li><p>It provides CRUD(read and write), Fuzzy Search, Remote Method Invocation (RMI), etc. Other features include saving duplicate data, checking request history, etc.</p></li>
 </ul>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>APIJSON are organized by json objects not endpoints. The client can access full capabilities of the data from a single endpoint. To send a request, the basic structure is :</p>
+<p><strong>baseURL / Methods(GET,GETS,POST,etc.) / JSONObject query</strong></p>
+<p>The following example shows how to query a user’s information.</p>
 <p><strong>Get a user:</strong></p>
 <p>Request</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -207,6 +210,7 @@
 </pre></div>
 </div>
 <p><a class="reference external" href="http://apijson.cn:8080/get/{&quot;User&quot;:{}}">Try it yourself</a></p>
+<p>The following example shows the query of getting three users’ <code class="code docutils literal notranslate"><span class="pre">id</span></code> and <code class="code docutils literal notranslate"><span class="pre">name</span></code>.</p>
 <p><strong>Get an array of users</strong></p>
 <p>Request</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
