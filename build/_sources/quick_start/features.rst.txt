@@ -10,16 +10,16 @@ Features
 
 * With these features, it saves communication time between front-end and back-end developers about the API design.
 
-**For clients:**
+**For users:**
 
-* You can get many resources and defferent forms of data by making just a single request While typical REST APIs require loading from multiple URLs. Being convenient and flexible, it saves sending multiple requests with multiple API endpoints.
+* You can get many resources and different forms of data by making just a single request While typical REST APIs require loading from multiple URLs. Being convenient and flexible, it saves sending multiple requests with multiple API endpoints.
 
 * It provides CRUD(read and write), Fuzzy Search, Remote Method Invocation (RMI), etc. Other features include saving duplicate data, checking request history, etc.
 
 Examples
 ---------
 
-APIJSON are organized by json objects not endpoints. The client can access full capabilities of the data from a single endpoint. To send a request, the basic structure is :
+APIJSON is organized by json objects not endpoints. The client can access full capabilities of the data from a single endpoint. To send a request, the basic structure is :
 
 **baseURL / Methods(GET,GETS,POST,etc.) / JSONObject query**
 

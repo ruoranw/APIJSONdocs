@@ -18,7 +18,7 @@ import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
 
-project = 'APIJSON Doc'
+project = 'APIJSON Docs'
 copyright = '2019, Ruoran Wang'
 author = 'Ruoran Wang'
 
@@ -36,7 +36,8 @@ extensions = ['recommonmark',
               'sphinx_markdown_tables',
               'sphinx_rtd_theme',
               'sphinxcontrib.contentui',
-              'sphinx.ext.intersphinx'
+              'sphinx.ext.intersphinx',
+              'sphinx.ext.autosectionlabel'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

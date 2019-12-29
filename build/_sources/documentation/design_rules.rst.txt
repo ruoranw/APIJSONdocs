@@ -3,7 +3,26 @@ API design style guide
 
 This chapter introduces methods in API designs with APIJSON. These methods are:
 
-**GET**, **HEAD**, **GETS**, **HEADS**, **POST**, **PUT**, **DELETE**.
++-------------------------+-------------------------------------------------------+
+|:ref:`GET <GETdef>`      |It provides a general way to retrieve resources.       |
++-------------------------+-------------------------------------------------------+
+|:ref:`HEAD <HEADdef>`    |It provides a general way to count resources satisfying|
+|                         |specifics in the request body.                         |
++-------------------------+-------------------------------------------------------+
+|:ref:`GETS <GETSdef>`    |It requests for highly secured and confidential data   |
+|                         |like bank accounts, birth dates.                       |
++-------------------------+-------------------------------------------------------+
+|:ref:`HEADS <HEADSdef>`  |It's used for getting counts of highly secured         |
+|                         |resources(eg. bank accounts).                          |
++-------------------------+-------------------------------------------------------+
+|:ref:`POST <POSTdef>`    |It creates new resources under the specified parent    |
+|                         |resource(TableName).                                   |
++-------------------------+-------------------------------------------------------+
+|:ref:`PUT <PUTdef>`      |This method asks the server to update/edit an existing |
+|                         |resource.                                              |
++-------------------------+-------------------------------------------------------+
+|:ref:`DELETE <DELETEdef>`|This method deletes the specified resource.            |
++-------------------------+-------------------------------------------------------+
 
 Methods are desired actions to be performed on identified resources. This chapter also include how these methods are mapped to HTTP methods.
 
@@ -12,7 +31,12 @@ The *base_URL* is the root address of the website. Everything that follows it is
 1. Methods and HTTP Mapping
 ----------------------------
 
-**GET** : A general way to retrieve resources.
+.. _GETdef:
+
+**GET** :
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A general way to retrieve resources.
 
 .. role:: blue
 
@@ -62,8 +86,12 @@ The *base_URL* is the root address of the website. Everything that follows it is
            "msg":"success"
           }
 
+.. _HEADdef:
 
-**HEAD** : A general way to retrieve the number of rows in a table satisfying the criteria specified in the request body.
+**HEAD** :
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A general way to count resources satisfying specifics in the request body.
 
 .. role:: blue
 
@@ -111,7 +139,12 @@ The *base_URL* is the root address of the website. Everything that follows it is
           "msg":"success"
          }
 
-**GETS** : Request for highly secured and confidential data like bank accounts, birth dates.
+.. _GETSdef:
+
+**GETS** :
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Request for highly secured and confidential data like bank accounts, birth dates.
 
 .. role:: blue
 
@@ -139,7 +172,13 @@ The *base_URL* is the root address of the website. Everything that follows it is
 
            // Same as **GET**
 
-**HEADS** : It's also used for getting counts except that it requests for highly secured resources(eg. bank accounts).
+.. _HEADSdef:
+
+**HEADS** :
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It's used for getting counts of highly secured resources(eg. bank accounts).
+
 
 .. role:: blue
 
@@ -167,7 +206,11 @@ The *base_URL* is the root address of the website. Everything that follows it is
 
           //  Same as **HEAD**.
 
-**POST** : The **POST** method creates new resouces under the specified parent resource(TableName).
+.. _POSTdef:
+
+**POST** :
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The **POST** method creates new resources under the specified parent resource(TableName).
 
 .. role:: blue
 
@@ -226,7 +269,12 @@ The *base_URL* is the root address of the website. Everything that follows it is
              "msg":"success"
           }
 
-**PUT** : The **PUT** method takes a request message containing a resource that updates the specific resource and its properties. It only updates the part that is contained in the request body.
+.. _PUTdef:
+
+**PUT** :
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The **PUT** method asks the server to update/edit an existing resource. The part that will be modified is included in the request body.
 
 .. role:: blue
 
@@ -266,7 +314,13 @@ The *base_URL* is the root address of the website. Everything that follows it is
 
            \\ Same as **POST**.
 
-**DELETE** : The **DELETE** method deletes the specified resource.
+.. _DELETEdef:
+
+**DELETE** :
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The **DELETE** method deletes the specified resource.
+
 
 .. role:: blue
 

@@ -1,4 +1,4 @@
-Server-side Development
+Server-side Deployment
 ========================
 
 This chapter shows how to make installation with Eclipse for JavaEE or IntelllJ IDEA Ultimate. For both, first download the project, unzip it and save it in a directory. you can also clone the project from github:
@@ -33,7 +33,7 @@ If you want to add your own database, open src-main-java-apijson-demo-server-mod
 .. image:: images/changedatabase.png
    :width: 300
 
-This is the file that you need to make change.
+This is the file that you need to make changes.
 
 .. code-block:: java
 

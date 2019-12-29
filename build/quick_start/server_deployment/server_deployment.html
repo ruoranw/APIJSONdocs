@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Server-side Development &mdash; APIJSON Doc 1.0.0 documentation</title>
+  <title>Server-side Deployment &mdash; APIJSON Docs 1.0.0 documentation</title>
   
 
   
@@ -38,8 +38,8 @@
   <link rel="stylesheet" href="../../_static/contentui.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Client-side Development" href="../client_deployment/client_deployment.html" />
-    <link rel="prev" title="Features" href="../../introduction/introduction.html" /> 
+    <link rel="next" title="Client-side Deployment" href="../client_deployment/client_deployment.html" />
+    <link rel="prev" title="Features" href="../features.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -53,7 +53,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> APIJSON Doc
+            <a href="../../index.html" class="icon icon-home"> APIJSON Docs
           
 
           
@@ -85,8 +85,9 @@
             
               <p class="caption"><span class="caption-text">Quick Start</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../introduction/introduction.html">Features</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Server-side Development</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">About APIJSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html">Features</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Server-side Deployment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#installing-with-eclipse">1. Installing with Eclipse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#importing-database">2. Importing database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-with-intellij-idea-ultimate">3. Installing with IntellIJ IDEA Ultimate</a><ul>
@@ -97,7 +98,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../client_deployment/client_deployment.html">Client-side Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../client_deployment/client_deployment.html">Client-side Deployment</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Documentation</span></p>
 <ul>
@@ -118,7 +119,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">APIJSON Doc</a>
+          <a href="../../index.html">APIJSON Docs</a>
         
       </nav>
 
@@ -149,7 +150,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-      <li>Server-side Development</li>
+      <li>Server-side Deployment</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -168,8 +169,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="server-side-development">
-<h1>Server-side Development<a class="headerlink" href="#server-side-development" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="server-side-deployment">
+<h1>Server-side Deployment<a class="headerlink" href="#server-side-deployment" title="Permalink to this headline">¶</a></h1>
 <p>This chapter shows how to make installation with Eclipse for JavaEE or IntelllJ IDEA Ultimate. For both, first download the project, unzip it and save it in a directory. you can also clone the project from github:</p>
 <p><code class="code docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/TommyLemon/APIJSON.git</span></code></p>
 <div class="section" id="installing-with-eclipse">
@@ -190,7 +191,7 @@
 <p><strong>Add your own database</strong></p>
 <p>If you want to add your own database, open src-main-java-apijson-demo-server-model-DemoSQLConfig.java. In line 40-61, change return values of <code class="code docutils literal notranslate"><span class="pre">getDBUri</span></code>, <code class="code docutils literal notranslate"><span class="pre">getDBAccount</span></code>, <code class="code docutils literal notranslate"><span class="pre">getDBPassword</span></code>, <code class="code docutils literal notranslate"><span class="pre">getSchema</span></code> to your own database.</p>
 <a class="reference internal image-reference" href="../../_images/changedatabase.png"><img alt="../../_images/changedatabase.png" src="../../_images/changedatabase.png" style="width: 300px;" /></a>
-<p>This is the file that you need to make change.</p>
+<p>This is the file that you need to make changes.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getDBUri</span><span class="o">()</span> <span class="o">{</span>
        <span class="c1">//TODO: Change the return value to your own</span>
@@ -268,10 +269,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../client_deployment/client_deployment.html" class="btn btn-neutral float-right" title="Client-side Development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../client_deployment/client_deployment.html" class="btn btn-neutral float-right" title="Client-side Deployment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../../introduction/introduction.html" class="btn btn-neutral float-left" title="Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../features.html" class="btn btn-neutral float-left" title="Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

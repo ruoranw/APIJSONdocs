@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API design style guide &mdash; APIJSON Doc 1.0.0 documentation</title>
+  <title>API design style guide &mdash; APIJSON Docs 1.0.0 documentation</title>
   
 
   
@@ -39,7 +39,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="How does APIJSON works?" href="why.html" />
-    <link rel="prev" title="Client-side Development" href="../quick_start/client_deployment/client_deployment.html" /> 
+    <link rel="prev" title="Client-side Deployment" href="../quick_start/client_deployment/client_deployment.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -53,7 +53,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> APIJSON Doc
+            <a href="../index.html" class="icon icon-home"> APIJSON Docs
           
 
           
@@ -85,14 +85,24 @@
             
               <p class="caption"><span class="caption-text">Quick Start</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction/introduction.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quick_start/server_deployment/server_deployment.html">Server-side Development</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quick_start/client_deployment/client_deployment.html">Client-side Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_start/introduction.html">About APIJSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_start/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_start/server_deployment/server_deployment.html">Server-side Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_start/client_deployment/client_deployment.html">Client-side Deployment</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API design style guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#methods-and-http-mapping">1. Methods and HTTP Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#methods-and-http-mapping">1. Methods and HTTP Mapping</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#get"><strong>GET</strong> :</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#head"><strong>HEAD</strong> :</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gets"><strong>GETS</strong> :</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#heads"><strong>HEADS</strong> :</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#post"><strong>POST</strong> :</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#put"><strong>PUT</strong> :</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#delete"><strong>DELETE</strong> :</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#endpoints-format">2. Endpoints Format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#build-in-string-functions-part-one">3. Build-in string functions part one</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#build-in-string-functions-part-two">4. Build-in string functions part two</a></li>
@@ -114,7 +124,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">APIJSON Doc</a>
+          <a href="../index.html">APIJSON Docs</a>
         
       </nav>
 
@@ -167,12 +177,47 @@
   <div class="section" id="api-design-style-guide">
 <h1>API design style guide<a class="headerlink" href="#api-design-style-guide" title="Permalink to this headline">¶</a></h1>
 <p>This chapter introduces methods in API designs with APIJSON. These methods are:</p>
-<p><strong>GET</strong>, <strong>HEAD</strong>, <strong>GETS</strong>, <strong>HEADS</strong>, <strong>POST</strong>, <strong>PUT</strong>, <strong>DELETE</strong>.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 69%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#getdef"><span class="std std-ref">GET</span></a></p></td>
+<td><p>It provides a general way to retrieve resources.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#headdef"><span class="std std-ref">HEAD</span></a></p></td>
+<td><p>It provides a general way to count resources satisfying
+specifics in the request body.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#getsdef"><span class="std std-ref">GETS</span></a></p></td>
+<td><p>It requests for highly secured and confidential data
+like bank accounts, birth dates.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#headsdef"><span class="std std-ref">HEADS</span></a></p></td>
+<td><p>It’s used for getting counts of highly secured
+resources(eg. bank accounts).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#postdef"><span class="std std-ref">POST</span></a></p></td>
+<td><p>It creates new resources under the specified parent
+resource(TableName).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#putdef"><span class="std std-ref">PUT</span></a></p></td>
+<td><p>This method asks the server to update/edit an existing
+resource.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#deletedef"><span class="std std-ref">DELETE</span></a></p></td>
+<td><p>This method deletes the specified resource.</p></td>
+</tr>
+</tbody>
+</table>
 <p>Methods are desired actions to be performed on identified resources. This chapter also include how these methods are mapped to HTTP methods.</p>
 <p>The <em>base_URL</em> is the root address of the website. Everything that follows it is known as a URL path. All API paths are relative to the base URL.</p>
 <div class="section" id="methods-and-http-mapping">
 <h2>1. Methods and HTTP Mapping<a class="headerlink" href="#methods-and-http-mapping" title="Permalink to this headline">¶</a></h2>
-<p><strong>GET</strong> : A general way to retrieve resources.</p>
+<div class="section" id="get">
+<span id="getdef"></span><h3><strong>GET</strong> :<a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h3>
+<p>A general way to retrieve resources.</p>
 <p><span class="blue">base_url/get/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
@@ -220,7 +265,10 @@
 </div></blockquote>
 </div>
 </div>
-<p><strong>HEAD</strong> : A general way to retrieve the number of rows in a table satisfying the criteria specified in the request body.</p>
+</div>
+<div class="section" id="head">
+<span id="headdef"></span><h3><strong>HEAD</strong> :<a class="headerlink" href="#head" title="Permalink to this headline">¶</a></h3>
+<p>A general way to count resources satisfying specifics in the request body.</p>
 <p><span class="blue">base_url/head/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
@@ -262,7 +310,10 @@
 </div>
 </div>
 </div>
-<p><strong>GETS</strong> : Request for highly secured and confidential data like bank accounts, birth dates.</p>
+</div>
+<div class="section" id="gets">
+<span id="getsdef"></span><h3><strong>GETS</strong> :<a class="headerlink" href="#gets" title="Permalink to this headline">¶</a></h3>
+<p>Request for highly secured and confidential data like bank accounts, birth dates.</p>
 <p><span class="blue">base_url/gets/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
@@ -288,7 +339,10 @@
 </div></blockquote>
 </div>
 </div>
-<p><strong>HEADS</strong> : It’s also used for getting counts except that it requests for highly secured resources(eg. bank accounts).</p>
+</div>
+<div class="section" id="heads">
+<span id="headsdef"></span><h3><strong>HEADS</strong> :<a class="headerlink" href="#heads" title="Permalink to this headline">¶</a></h3>
+<p>It’s used for getting counts of highly secured resources(eg. bank accounts).</p>
 <p><span class="blue">base_url/heads/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
@@ -310,7 +364,10 @@
 </div>
 </div>
 </div>
-<p><strong>POST</strong> : The <strong>POST</strong> method creates new resouces under the specified parent resource(TableName).</p>
+</div>
+<div class="section" id="post">
+<span id="postdef"></span><h3><strong>POST</strong> :<a class="headerlink" href="#post" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>POST</strong> method creates new resources under the specified parent resource(TableName).</p>
 <p><span class="blue">base_url/post/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
@@ -362,7 +419,10 @@
 </div>
 </div>
 </div>
-<p><strong>PUT</strong> : The <strong>PUT</strong> method takes a request message containing a resource that updates the specific resource and its properties. It only updates the part that is contained in the request body.</p>
+</div>
+<div class="section" id="put">
+<span id="putdef"></span><h3><strong>PUT</strong> :<a class="headerlink" href="#put" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>PUT</strong> method asks the server to update/edit an existing resource. The part that will be modified is included in the request body.</p>
 <p><span class="blue">base_url/put/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
@@ -398,7 +458,10 @@
 </div></blockquote>
 </div>
 </div>
-<p><strong>DELETE</strong> : The <strong>DELETE</strong> method deletes the specified resource.</p>
+</div>
+<div class="section" id="delete">
+<span id="deletedef"></span><h3><strong>DELETE</strong> :<a class="headerlink" href="#delete" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>DELETE</strong> method deletes the specified resource.</p>
 <p><span class="blue">base_url/delete/</span></p>
 <div class="content-tabs docutils container">
 <div class="tab-content docutils container" id="tab-tab1">
@@ -463,6 +526,7 @@
 <li><p>Each object in the request body is related to an  individually-addressable resource which has an unique path.</p></li>
 </ol>
 </div></blockquote>
+</div>
 </div>
 <div class="section" id="endpoints-format">
 <h2>2. Endpoints Format<a class="headerlink" href="#endpoints-format" title="Permalink to this headline">¶</a></h2>
@@ -838,7 +902,7 @@
         <a href="why.html" class="btn btn-neutral float-right" title="How does APIJSON works?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../quick_start/client_deployment/client_deployment.html" class="btn btn-neutral float-left" title="Client-side Development" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../quick_start/client_deployment/client_deployment.html" class="btn btn-neutral float-left" title="Client-side Deployment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -10,3 +10,7 @@ About APIJSON
   APIJSON has been honored by Gitee as the *Most Valuable Project* in 2019.
 
   .. image:: https://raw.githubusercontent.com/TommyLemon/StaticResources/master/APIJSON_GVPAwardCertificate-small.jpg
+
+--------------------------
+
+  .. image:: https://raw.githubusercontent.com/TommyLemon/StaticResources/master/APIJSON/APIJSONisOneOfTheGVPsIn2019-small.jpg

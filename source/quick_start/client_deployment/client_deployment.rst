@@ -1,4 +1,4 @@
-Client-side Development
+Client-side Deployment
 ========================
 
 1. For Android app
