@@ -93,7 +93,7 @@
 <p class="caption"><span class="caption-text">Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API design style guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#methods-and-http-mapping">1. Methods and HTTP Mapping</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#apijson-methods">1. APIJSON Methods</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#get"><strong>GET</strong> :</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#head"><strong>HEAD</strong> :</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gets"><strong>GETS</strong> :</a></li>
@@ -103,7 +103,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#delete"><strong>DELETE</strong> :</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#endpoints-format">2. Endpoints Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#functional-key-value-pairs">2. Functional Key-Value Pairs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#build-in-string-functions-part-one">3. Build-in string functions part one</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#build-in-string-functions-part-two">4. Build-in string functions part two</a></li>
 </ul>
@@ -211,10 +211,10 @@ resource.</p></td>
 </tr>
 </tbody>
 </table>
-<p>Methods are desired actions to be performed on identified resources. This chapter also include how these methods are mapped to HTTP methods.</p>
-<p>The <em>base_URL</em> is the root address of the website. Everything that follows it is known as a URL path. All API paths are relative to the base URL.</p>
-<div class="section" id="methods-and-http-mapping">
-<h2>1. Methods and HTTP Mapping<a class="headerlink" href="#methods-and-http-mapping" title="Permalink to this headline">¶</a></h2>
+<p>Request method tells the server what kind of action the client wants the server to take. The method are also commonly referred to as the request “verb”. This chapter will show you how these methods are included in url to send requests.</p>
+<p>In the following explanations, the <em>base_URL</em> means the root URL. Everything that follows it is known as a URL path. All URL paths are relative to the base URL.</p>
+<div class="section" id="apijson-methods">
+<h2>1. APIJSON Methods<a class="headerlink" href="#apijson-methods" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="get">
 <span id="getdef"></span><h3><strong>GET</strong> :<a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h3>
 <p>A general way to retrieve resources.</p>
@@ -521,28 +521,28 @@ resource.</p></td>
 <li><p><code class="code docutils literal notranslate"><span class="pre">“tag”:tag</span></code> needs to be included when the request method is neither <strong>GET</strong> nor <strong>HEAD</strong>. The value <em>tag</em> is the key of the returned jsonObject in the response body. Usually, it’s the name of the related table.</p></li>
 <li><p>The request form under <strong>GET</strong> and <strong>HEAD</strong> methods are very flexible. The request jsonObject can be nested many levels. However, other methods need to be constrained by adding tags, etc. The structure of the request body needs to conform resources at the backend.</p></li>
 <li><p><strong>GETS</strong> and <strong>GET</strong>, <strong>HEADS</strong> and <strong>HEAD</strong> are the same type of operation. For both groups, the request bodies have something different, while the response bodies are the same.</p></li>
-<li><p>In HTTP mapping, all ghe API methods above (get,gets,head,heads,post,put,delete) use HTTP <strong>POST</strong> verb.</p></li>
-<li><p>All jsonObjects are seen as variables or folders with the form of <code class="code docutils literal notranslate"><span class="pre">{...}</span></code>. It can store objects or sub-variables.</p></li>
-<li><p>Each object in the request body is related to an  individually-addressable resource which has an unique path.</p></li>
+<li><p>When transmit through HTTP protocal, all the API methods (get,gets,head,heads,post,put,delete) use HTTP <strong>POST</strong> verb.</p></li>
+<li><p>All jsonObjects are seen as variables or folders with the form of <code class="code docutils literal notranslate"><span class="pre">{...}</span></code>. It can store objects or associative arrays.</p></li>
+<li><p>Each object is related to an individually-addressable resource which has an unique address.</p></li>
 </ol>
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="endpoints-format">
-<h2>2. Endpoints Format<a class="headerlink" href="#endpoints-format" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="functional-key-value-pairs">
+<h2>2. Functional Key-Value Pairs<a class="headerlink" href="#functional-key-value-pairs" title="Permalink to this headline">¶</a></h2>
 <p><strong>Get data in an array:</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{}}}</span></code></p>
 <p>The part after the colon is a JSONObject. The <code class="code docutils literal notranslate"><span class="pre">key</span></code> is optional. When <code class="code docutils literal notranslate"><span class="pre">key</span></code> is as the same as the <code class="code docutils literal notranslate"><span class="pre">tableName</span></code>, the JSONObject will be in a simplified form. For example: <code class="code docutils literal notranslate"><span class="pre">{&quot;User[]&quot;:{&quot;User&quot;:{&quot;id&quot;,...}}}</span></code> will be written as <code class="code docutils literal notranslate"><span class="pre">{&quot;User[]&quot;:{&quot;id&quot;,...}}</span></code>.</p>
 <div class="toggle-header docutils container">
-<p>Example</p>
+<p>Example
+<a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%7D%7D%7D">/get/{“User[]”:{“count”:3,”User”:{}}}</a></p>
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
-<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%7D%7D%7D">/get/{“User[]”:{“count”:3,”User”:{}}}</a></p>
-<p>In this example, the request is to <strong>GET</strong> 3 users’ information. The return includes 3 users information with all categories saved in an array.</p>
+<div><p>In this example, the request is to <strong>GET</strong> 3 users’ information. The return includes 3 users information with all categories saved in an array.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Get data that meets specific conditions:</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{&quot;key2{}&quot;:[]}}}</span></code></p>
+<p><strong>Get data that matches a specified criteria:</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{&quot;key2{}&quot;:[]}}}</span></code></p>
 <p>Specifically in this part: <code class="code docutils literal notranslate"><span class="pre">&quot;id{}&quot;:[]</span></code>, the part after the colon is a JSONArray which contains <code class="code docutils literal notranslate"><span class="pre">key2</span></code>’s values. This part is to specify the conditions that the returning body should satisfy.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>

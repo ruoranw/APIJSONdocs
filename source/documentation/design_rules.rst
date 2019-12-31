@@ -24,12 +24,12 @@ This chapter introduces methods in API designs with APIJSON. These methods are:
 |:ref:`DELETE <DELETEdef>`|This method deletes the specified resource.            |
 +-------------------------+-------------------------------------------------------+
 
-Methods are desired actions to be performed on identified resources. This chapter also include how these methods are mapped to HTTP methods.
+Request method tells the server what kind of action the client wants the server to take. The method are also commonly referred to as the request "verb". This chapter will show you how these methods are included in url to send requests.
 
-The *base_URL* is the root address of the website. Everything that follows it is known as a URL path. All API paths are relative to the base URL.
+In the following explanations, the *base_URL* means the root URL. Everything that follows it is known as a URL path. All URL paths are relative to the base URL.
 
-1. Methods and HTTP Mapping
-----------------------------
+1. APIJSON Methods
+------------------
 
 .. _GETdef:
 
@@ -389,15 +389,15 @@ The **DELETE** method deletes the specified resource.
 
     4. **GETS** and **GET**, **HEADS** and **HEAD** are the same type of operation. For both groups, the request bodies have something different, while the response bodies are the same.
 
-    5. In HTTP mapping, all ghe API methods above (get,gets,head,heads,post,put,delete) use HTTP **POST** verb.
+    5. When transmit through HTTP protocal, all the API methods (get,gets,head,heads,post,put,delete) use HTTP **POST** verb.
 
-    6. All jsonObjects are seen as variables or folders with the form of :code:`{...}`. It can store objects or sub-variables.
+    6. All jsonObjects are seen as variables or folders with the form of :code:`{...}`. It can store objects or associative arrays.
 
-    7. Each object in the request body is related to an  individually-addressable resource which has an unique path.
+    7. Each object is related to an individually-addressable resource which has an unique address.
 
 
-2. Endpoints Format
---------------------
+2. Functional Key-Value Pairs
+-----------------------------
 
 **Get data in an array:** :code:`/get/{"key[]":{"tableName":{}}}`
 
@@ -409,9 +409,9 @@ The part after the colon is a JSONObject. The :code:`key` is optional. When :cod
        `/get/{"User[]":{"count":3,"User":{}}} <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%7D%7D%7D>`_
 
        In this example, the request is to **GET** 3 users' information. The return includes 3 users information with all categories saved in an array.
-----------------
+-----------------------------------------------------------------------------------
 
-**Get data that meets specific conditions:** :code:`/get/{"key[]":{"tableName":{"key2{}":[]}}}`
+**Get data that matches a specified criteria:** :code:`/get/{"key[]":{"tableName":{"key2{}":[]}}}`
 
 Specifically in this part: :code:`"id{}":[]`, the part after the colon is a JSONArray which contains :code:`key2`'s values. This part is to specify the conditions that the returning body should satisfy.
 
@@ -421,8 +421,7 @@ Specifically in this part: :code:`"id{}":[]`, the part after the colon is a JSON
        `/get/{"User[]":{"count":3,"User":{"id{}":[38710,82001,70793]}}} <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%5B38710,82001,70793%5D%7D%7D%7D>`_
 
        This example shows how to get users's information with id equals 38710,82001,70793.
-
-----------------
+-----------------------------------------------------------------------------------
 
 **Get data with comparison operation：** :code:`/get/{"key[]":{"tableName":{"id{}":"<=80000,>90000"}}}`
 
@@ -434,8 +433,8 @@ Like the comparison operation in SQL, it's used here to get resources in a range
        `/get/{"User[]":{"count":3,"User":{"id{}":"<=80000,>90000"}}} <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22id%7B%7D%22:%22%3C=80000,%3E90000%22%7D%7D%7D>`_
 
        In SQL, it'd be :code:`id<=80000 OR id>90000`, which means get User array with id<=80000 | id>90000
+-----------------------------------------------------------------------------------
 
-----------------
 
 **Get data that contains an element:** :code:`/get/{"key[]":{"User":{"key2<>":[object]}}}`
 
@@ -447,8 +446,7 @@ This also used when the user wants to get data that meets specific conditions. :
        `"/get/{"User[]":{"count":3,"User":{"contactIdList<>":38710}}}":38710 <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22contactIdList%3C%3E%22:38710%7D%7D%7D>`_
 
        In this example, it requests 3 User arrays whose contactIdList contains 38710. In SQL, this would be :code:`json_contains(contactIdList,38710)`.
-
-----------------
+-----------------------------------------------------------------------------------
 
 **See if it exists** :code:`/get/{"key":{"key2}{@":{"from":"tableName","tableName":{...}}}}`
 
@@ -466,8 +464,7 @@ In this request url, *}{* means EXISTS; *key2* is the item you want to check.
               } <http://apijson.cn:8080/get/%7B%22User%22:%7B%22id%7D%7B@%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22momentId%22:15%7D%7D%7D%7D>`_
 
        In this example, the request is to check if the id whose :code:`momentId = 15` exists. The SQL form would be :code:`WHERE EXISTS(SELECT * FROM Comment WHERE momentId=15)`
-
-----------------
+-----------------------------------------------------------------------------------
 
 **Include functions in url parameters** :code:`/get/{"Table":{"key":value, key()":"function (key0,key1...)}"`
 
@@ -481,8 +478,7 @@ Use - and + to show the order of priority: analyze key-() > analyze the current 
        `/get/{"Moment":{"id":301,"isPraised()":"isContain(praiseUserIdList,userId)"}} <http://apijson.cn:8080/get/%7B%22Moment%22:%7B%22id%22:301,%22isPraised()%22:%22isContain(praiseUserIdList,userId)%22%7D%7D>`_
 
        This will use function boolean :code:`isContain(JSONObject request, String array, String value)`. In this case, client will get :code:`“is praised”: true` (In this case, client use function to testify if a user clicked ‘like’ button for a post.)
-
-------------------
+-----------------------------------------------------------------------------------
 
 **Refer a value**
 
@@ -503,8 +499,7 @@ Use forward slash to show the path. The part before the colon is the key that wa
               } <http://apijson.cn:8080/get/%7B%22User%22:%7B%22id@%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22@column%22:%22min(userId)%22%7D%7D%7D%7D>`_
 
        In this example, the value of :code:`id` in :code:`User` refer to the :code:`userId` in :code:`Moment`, which means :code:`User.id = Moment.userId`. After the request is sent, :code:`"id@":"/Moment/userId"` will be :code:`"id":38710`.
-
-------------------
+-----------------------------------------------------------------------------------
 
 **Subquery expression**
 
@@ -529,8 +524,7 @@ Range can be **ALL**, **ANY**. It means which table you want to query. It’s ve
                } <http://apijson.cn:8080/get/%7B%22User%22:%7B%22id@%22:%7B%22from%22:%22Comment%22,%22Comment%22:%7B%22@column%22:%22min(userId)%22%7D%7D%7D%7D>`_
 
        :code: `WHERE id=(SELECT min(userId) FROM Comment)`
-
-----------------
+-----------------------------------------------------------------------------------
 
 **Fuzzy matching** :code:`"key$":"SQL search expressions"` => :code:`"key$":["SQL search expressions"]`
 
@@ -542,9 +536,7 @@ Any SQL search expression can be applied here.
        `"name$":"%m%" <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22name$%22:%22%2525m%2525%22%7D%7D%7D>`_
 
        In SQL, it's :code:`name LIKE '%m%'`, meaning that get *User* with ‘m’ in name.
-
-
-----------------
+-----------------------------------------------------------------------------------
 
 **Regular Expression** :code:`"key~":"regular expression"` => :code:`"key~":["regular expression"]`
 
@@ -556,8 +548,7 @@ It can be any regular expressions. Advanced search is applicable.
        `"name~":"^[0-9]+$" <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22name~%22:%22%5E%5B0-9%5D%252B$%22%7D%7D%7D>`_
 
        In SQL, it's :code:`name REGEXP '^[0-9]+$'`.
-
-----------------
+-----------------------------------------------------------------------------------
 
 **Get data in a range** :code:`"key%":"start,end"` => :code:`"key%":["start,end"]`
 
@@ -569,8 +560,7 @@ The data type of start and end can only be either **Boolean**, **Number** or **S
        `"date%":"2017-10-01,2018-10-01" <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%22date%2525%22:%222017-10-01,2018-10-01%22%7D%7D%7D>`_
 
         In SQL, it's :code:`date BETWEEN '2017-10-01' AND '2018-10-01'`, meaning to get *User* data that registered between 2017-10-01 and 2018-10-01.
-
-----------------
+-----------------------------------------------------------------------------------
 
 **Make an alias** :code:`"name:alias"`
 
@@ -582,8 +572,7 @@ This changes name to alias in returning results. It’s applicable to column, ta
        `/get/{"Comment":{"@column":"id,toId:parentId","id":51}} <http://apijson.cn:8080/get/%7B%22Comment%22:%7B%22@column%22:%22id,toId:parentId%22,%22id%22:51%7D%7D>`_
 
        In SQL, it's :code:`toId AS parentId`. It'll return *parentID* instead of *toID*.
-
-----------------
+-----------------------------------------------------------------------------------
 
 **Add / expand an item** :code:`"key+":number/string/array...`
 
@@ -607,8 +596,7 @@ It has the contrary function of :code:`“key+”`.
        :code:`"balance-":100.00`
 
        This example subtract 100 in the balance. In SQL, it would be :code:`balance = balance - 100.00`.
-
------------------
+-----------------------------------------------------------------------------------
 
 **Logical Operators** :code:`&,|,!`
 
@@ -630,8 +618,7 @@ By default, conditions of the same key are connected with :code:`|` operator. As
         ③ `/head/{"User":{"id!{}":[82001,38710]}} <http://apijson.cn:8080/head/%7B%22User%22:%7B%22id!%7B%7D%22:%5B82001,38710%5D%7D%7D>`_.
 
         In SQL, it's :code:`id NOT IN(82001,38710)`, meaning :code:`id` needs to be :code:`! (id=82001 | id=38710)`.
-
------------------
+-----------------------------------------------------------------------------------
 
 3. Build-in string functions part one
 -------------------------------------
@@ -646,8 +633,7 @@ This is used to set the maximum number of the returning resources. The maximum n
         `/get/{"[]":{"count":5,"User":{}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:5,%22User%22:%7B%7D%7D%7D>`_
 
         This example requests 5 Users' data.
-
------------------
+-----------------------------------------------------------------------------------
 
 ② :code:`"page":Integer`
 
@@ -659,8 +645,7 @@ This is to indicate the page number starting with 0. The max number can be 100. 
         `/get/{"[]":{"count":5,"page":3,"User":{}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:5,%22page%22:3,%22User%22:%7B%7D%7D%7D>`_
 
         This example get Users data on page 3 with the total number of 5.
-
------------------
+-----------------------------------------------------------------------------------
 
 ③ :code:`"query":Integer`
 
@@ -670,8 +655,7 @@ When the :code:`Integer` is 0, it means get the resource. When it's 1, it means 
     :header: Example
 
         `/get/{"[]":{"query":2, User:{}}, "total@":"/[]/total"} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22query%22:2,%22count%22:5,%22User%22:%7B%7D%7D,%22total@%22:%22%252F%5B%5D%252Ftotal%22%7D>`_
-
------------------
+-----------------------------------------------------------------------------------
 
 ④ :code:`"join":"&/Table0/key0@,</Table1/key1@"`
 
@@ -693,7 +677,7 @@ The joining table functions are represented by symbols:
         `/get/{"[]":{"join": "&/User/id@,</Comment/momentId@", "Moment":{}, "User":{"name?":"t", "id@": "/Moment/userId"}, "Comment":{"momentId@": "/Moment/id"}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:5,%22join%22:%22&%252FUser%252Fid@,%3C%252FComment%252FmomentId@%22,%22Moment%22:%7B%22@column%22:%22id,userId,content%22%7D,%22User%22:%7B%22name%253F%22:%22t%22,%22id@%22:%22%252FMoment%252FuserId%22,%22@column%22:%22id,name,head%22%7D,%22Comment%22:%7B%22momentId@%22:%22%252FMoment%252Fid%22,%22@column%22:%22id,momentId,content%22%7D%7D%7D>`_
 
       This examples is equal to SQL expression :code:`Moment INNER JOIN User LEFT JOIN Comment`.
--------------------
+-----------------------------------------------------------------------------------
 
 4. Build-in string functions part two
 -------------------------------------
@@ -710,8 +694,7 @@ The:code:`other keys` means keys that aren't included in :code:`combine` functio
         `/get/{"User[]":{"count":10,"User":{"@column":"id,name,tag","name~":"a","tag~":"a","@combine":"name~,tag~"}}} <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:10,%22User%22:%7B%22@column%22:%22id,name,tag%22,%22name~%22:%22a%22,%22tag~%22:%22a%22,%22@combine%22:%22name~,tag~%22%7D%7D%7D>`_
 
         This example request User objects whose :code:`name` or :code:`tag` includes "a".
-
--------------------
+-----------------------------------------------------------------------------------
 
 ② :code:`"@column":"column;function(arg)..."`
 
@@ -723,8 +706,7 @@ This function defines which colunms will be returned.
        `/get/{"User":{"@column":"id,sex,name","id":38710}} <http://apijson.cn:8080/get/%7B%22User%22:%7B%22@column%22:%22id,sex,name%22,%22id%22:38710%7D%7D>`_
 
        This request only returns colunms: id, sex, name. The returning follows the same order.
-
---------------------
+-----------------------------------------------------------------------------------
 
 ③ :code:`"@order":"column0+,column1-..."`
 
@@ -736,8 +718,7 @@ This function can set descendent or ascendent order of returning data within a c
         `/get/{"[]":{"count":10,"User":{"@column":"name,id","@order":"name-,id"}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:10,%22User%22:%7B%22@column%22:%22name,id%22,%22@order%22:%22name-,id%22%7D%7D%7D>`_
 
         This example requests data following descendent order in name column while the default order in id column.
-
----------------------
+-----------------------------------------------------------------------------------
 
 ④ :code:`"@group":"column0,column1..."`
 
@@ -749,8 +730,7 @@ This function groups data with columns. If the table's :code:`id` has been decla
         `/get/{"[]":{"count":10,"Moment":{"@column":"userId,id","@group":"userId,id"}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:10,%22Moment%22:%7B%22@column%22:%22userId,id%22,%22@group%22:%22userId,id%22%7D%7D%7D>`_
 
         This example returns :code:`id` grouped by userId.
-
----------------------
+-----------------------------------------------------------------------------------
 
 ⑤ :code:`"@having":"function0(...)?value0;function1(...)?value1;function2(...)?value2..."`
 
@@ -762,8 +742,7 @@ This function is as same as the **HAVING** function in AQL. Normally, it's used 
         `/get/{"[]":{"Moment":{"@column":"userId;max(id)","@group":"userId","@having":"max(id)>=100"}}} <http://apijson.cn:8080/get/%7B%22%5B%5D%22:%7B%22count%22:10,%22Moment%22:%7B%22@column%22:%22userId%253Bmax(id)%22,%22@group%22:%22userId%22,%22@having%22:%22max(id)%3E=100%22%7D%7D%7D>`_
 
         This example get an array of Moment with userID and id where id >=100, grouped by userId.
-
----------------------
+-----------------------------------------------------------------------------------
 
 ⑥ :code:`"@schema":"sys"`
 
