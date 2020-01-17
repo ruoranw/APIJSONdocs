@@ -161,21 +161,21 @@
             
   <div class="section" id="how-does-apijson-works">
 <h1>How does APIJSON works?<a class="headerlink" href="#how-does-apijson-works" title="Permalink to this headline">¶</a></h1>
-<p>APIJSON-Server will turn JSON formatted requests to SQL statements. Then as the database has been connected, those SQL statements will be executed. The server will return specified resources in JSON. During the whole process, APIJSON automatically verify the user’s role and authorization, which will prevent malicious SQL injection.</p>
-<p>Besides, developers can verify the request body by adding code in database. For instance, to verify if the value of <code class="code docutils literal notranslate"><span class="pre">type{}</span></code> would be one of <code class="code docutils literal notranslate"><span class="pre">[0,1,2]</span></code>, you just need to add the following in the database:</p>
+<p>APIJSON-Server will turn JSON formatted requests to SQL statements. Then as the database has been connected, those SQL statements will be executed. The server will return specified resources in JSON. During the whole process, APIJSON automatically verify the user’s role and permissions, which will prevent malicious SQL injection.</p>
+<p>You can also set restrictions on the request content by set rules in the database beforehand. For instance, to verify if the value of <code class="code docutils literal notranslate"><span class="pre">type{}</span></code> would be one of <code class="code docutils literal notranslate"><span class="pre">[0,1,2]</span></code>, you just need to add the following in the database:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>&quot;VERIFY&quot;:{
   &quot;type{}&quot;:[0,1,2]
 }
 </pre></div>
 </div>
 <p>Others that are used to verify requests include:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>&quot;VERIFY&quot;: { &quot;money&amp;{}&quot;:&quot;&gt;0,&lt;=10000&quot; }              //Verify if money&gt;0 &amp; money&lt;=10000.
-&quot;TYPE&quot;: { &quot;balance&quot;: &quot;Double&quot; }                    //Verify if the &quot;TYPE&quot; of the &quot;balance&quot; is &quot;Double&quot;.
-&quot;UNIQUE&quot;: &quot;phone&quot;                                  //The value of &quot;phone&quot; shouldn&#39;t be the same as any one already in the database.
-&quot;NECESSARY&quot;: &quot;id,name&quot;                             //&quot;id&quot; and &quot;name&quot; are requested.
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>&quot;VERIFY&quot;: { &quot;money&amp;{}&quot;:&quot;&gt;0,&lt;=10000&quot; }              //To verify if the value if money is between 0 and 10000.
+&quot;TYPE&quot;: { &quot;balance&quot;: &quot;Double&quot; }                    //To verify if the data type of the &quot;balance&quot; is &quot;Double&quot;.
+&quot;UNIQUE&quot;: &quot;phone&quot;                                  //The value of &quot;phone&quot; must be unique.
+&quot;NECESSARY&quot;: &quot;id,name&quot;                             //&quot;id&quot; and &quot;name&quot; must be included in the request body.
 &quot;DISALLOW&quot;: &quot;balance&quot;                              //&quot;Balance&quot; is not allowed to be included in the request body.
-&quot;INSERT&quot;: { &quot;@role&quot;: &quot;OWNER&quot; }                     //If &quot;role&quot; is not included, then the default value will be add to the database.
-&quot;UPDATE&quot;: { &quot;id@&quot;: &quot;User/id&quot; }                     //Force to add key-value pairs.
+&quot;INSERT&quot;: { &quot;@role&quot;: &quot;OWNER&quot; }                     //If the &quot;role&quot; is not included in the request, the system will assign one by default.
+&quot;UPDATE&quot;: { &quot;id@&quot;: &quot;User/id&quot; }                     //To force to insert a key-value pair.
 </pre></div>
 </div>
 <p>To see a full list of key words that used to set constraints on requests or verify requests, <a class="reference external" href="https://github.com/APIJSON/APIJSON/blob/master/APIJSON-Java-Server/APIJSONORM/src/main/java/zuo/biao/apijson/server/Operation.java">click here</a>.</p>

@@ -176,7 +176,7 @@
             
   <div class="section" id="api-design-style-guide">
 <h1>API design style guide<a class="headerlink" href="#api-design-style-guide" title="Permalink to this headline">¶</a></h1>
-<p>This chapter introduces methods in API designs with APIJSON. These methods are:</p>
+<p>This chapter introduces methods in APIJSON. These methods are:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 31%" />
@@ -533,17 +533,17 @@ resource.</p></td>
 <p><strong>Get data in an array:</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{}}}</span></code></p>
 <p>The part after the colon is a JSONObject. The <code class="code docutils literal notranslate"><span class="pre">key</span></code> is optional. When <code class="code docutils literal notranslate"><span class="pre">key</span></code> is as the same as the <code class="code docutils literal notranslate"><span class="pre">tableName</span></code>, the JSONObject will be in a simplified form. For example: <code class="code docutils literal notranslate"><span class="pre">{&quot;User[]&quot;:{&quot;User&quot;:{&quot;id&quot;,...}}}</span></code> will be written as <code class="code docutils literal notranslate"><span class="pre">{&quot;User[]&quot;:{&quot;id&quot;,...}}</span></code>.</p>
 <div class="toggle-header docutils container">
-<p>Example
-<a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%7D%7D%7D">/get/{“User[]”:{“count”:3,”User”:{}}}</a></p>
+<p>Example</p>
 </div>
 <div class="toggle-content docutils container">
 <blockquote>
-<div><p>In this example, the request is to <strong>GET</strong> 3 users’ information. The return includes 3 users information with all categories saved in an array.</p>
+<div><p><a class="reference external" href="http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%7D%7D%7D">/get/{“User[]”:{“count”:3,”User”:{}}}</a></p>
+<p>In this example, the request is to <strong>GET</strong> 3 users’ information. The response includes 3 users information with all categories saved in an array.</p>
 </div></blockquote>
 </div>
 <hr class="docutils" />
-<p><strong>Get data that matches a specified criteria:</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{&quot;key2{}&quot;:[]}}}</span></code></p>
-<p>Specifically in this part: <code class="code docutils literal notranslate"><span class="pre">&quot;id{}&quot;:[]</span></code>, the part after the colon is a JSONArray which contains <code class="code docutils literal notranslate"><span class="pre">key2</span></code>’s values. This part is to specify the conditions that the returning body should satisfy.</p>
+<p><strong>Get filtered data:</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{&quot;key2{}&quot;:[]}}}</span></code></p>
+<p>Specifically in this part: <code class="code docutils literal notranslate"><span class="pre">&quot;key2{}&quot;:[]</span></code>, the part after the colon is a JSONArray which contains <code class="code docutils literal notranslate"><span class="pre">key2</span></code>’s values. This part is to specify the conditions that the return should satisfy.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>
@@ -555,7 +555,7 @@ resource.</p></td>
 </div>
 <hr class="docutils" />
 <p><strong>Get data with comparison operation：</strong> <code class="code docutils literal notranslate"><span class="pre">/get/{&quot;key[]&quot;:{&quot;tableName&quot;:{&quot;id{}&quot;:&quot;&lt;=80000,&gt;90000&quot;}}}</span></code></p>
-<p>Like the comparison operation in SQL, it’s used here to get resources in a range. It dosn’t need to be numbers however.</p>
+<p>Just as the comparison operation functions in SQL, it’s used here to get resources in a range. It dosn’t need to be numbers though.</p>
 <div class="toggle-header docutils container">
 <p>Example</p>
 </div>

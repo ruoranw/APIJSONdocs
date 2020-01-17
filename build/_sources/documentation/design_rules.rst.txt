@@ -1,7 +1,7 @@
 API design style guide
 ======================
 
-This chapter introduces methods in API designs with APIJSON. These methods are:
+This chapter introduces methods in APIJSON. These methods are:
 
 +-------------------------+-------------------------------------------------------+
 |:ref:`GET <GETdef>`      |It provides a general way to retrieve resources.       |
@@ -405,14 +405,15 @@ The part after the colon is a JSONObject. The :code:`key` is optional. When :cod
 
 .. toggle-header::
     :header: Example
+
        `/get/{"User[]":{"count":3,"User":{}}} <http://apijson.cn:8080/get/%7B%22User%5B%5D%22:%7B%22count%22:3,%22User%22:%7B%7D%7D%7D>`_
 
-       In this example, the request is to **GET** 3 users' information. The return includes 3 users information with all categories saved in an array.
+       In this example, the request is to **GET** 3 users' information. The response includes 3 users information with all categories saved in an array.
 -----------------------------------------------------------------------------------
 
-**Get data that matches a specified criteria:** :code:`/get/{"key[]":{"tableName":{"key2{}":[]}}}`
+**Get filtered data:** :code:`/get/{"key[]":{"tableName":{"key2{}":[]}}}`
 
-Specifically in this part: :code:`"id{}":[]`, the part after the colon is a JSONArray which contains :code:`key2`'s values. This part is to specify the conditions that the returning body should satisfy.
+Specifically in this part: :code:`"key2{}":[]`, the part after the colon is a JSONArray which contains :code:`key2`'s values. This part is to specify the conditions that the return should satisfy.
 
 .. toggle-header::
     :header: Example
@@ -424,7 +425,7 @@ Specifically in this part: :code:`"id{}":[]`, the part after the colon is a JSON
 
 **Get data with comparison operation：** :code:`/get/{"key[]":{"tableName":{"id{}":"<=80000,>90000"}}}`
 
-Like the comparison operation in SQL, it's used here to get resources in a range. It dosn't need to be numbers however.
+Just as the comparison operation functions in SQL, it's used here to get resources in a range. It dosn't need to be numbers though.
 
 .. toggle-header::
     :header: Example
